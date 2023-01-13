@@ -4,12 +4,13 @@ module Decidim
   module DecidimAwesome
     module Admin
       class AdminActionsController < DecidimAwesome::Admin::ApplicationController
-        include ConfigConstraintsHelpers
-        helper ConfigConstraintsHelpers
+        include NeedsAwesomeConfig
 
         layout "decidim/admin/users"
 
-        def index; end
+        def index
+          enforce_permission_to :index, :admin_action
+        end
 
         def export_xls
           # TODO: export to xls
