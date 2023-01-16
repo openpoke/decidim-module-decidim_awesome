@@ -9,7 +9,7 @@ module Decidim
         layout "decidim/admin/users"
 
         def index
-          enforce_permission_to :index, :admin_action
+          enforce_permission_to :index, :admin_accountability
         end
 
         def export_xls
