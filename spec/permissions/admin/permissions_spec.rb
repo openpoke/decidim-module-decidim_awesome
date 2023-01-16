@@ -69,7 +69,7 @@ module Decidim::DecidimAwesome::Admin
       let(:status) { true }
 
       before do
-        allow(Decidim::DecidimAwesome.config).to receive(:allow_admin_accountability).and_return(status)
+        allow(Decidim::DecidimAwesome.config).to receive(feature).and_return(status)
       end
 
       it { is_expected.to eq true }
@@ -77,7 +77,7 @@ module Decidim::DecidimAwesome::Admin
       context "when admin_accountability is disabled" do
         let(:status) { :disabled }
 
-        it_behaves_like "permission is not set"
+        it { is_expected.to eq false }
       end
     end
   end
