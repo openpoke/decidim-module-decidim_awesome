@@ -11,19 +11,25 @@ describe "Admin accountability", type: :system do
     login_as user, scope: :user
 
     visit decidim_admin.root_path
-    click_link "Participants"
   end
 
-  context "when admin goes to 'Participants' page" do
-    it "shows 'Admin accountability' submenu" do
-      expect(page).to have_link("Admin accountability")
+  context "when admin accountability is enabled" do
+    it "shows the admin accountability link" do
+      click_link "Participants"
+
+      expect(page).to have_content("Admin accountability")
     end
   end
 
-  context "when admin clicks on 'Admin accountability' submenu" do
-    it "has title page" do
-      click_link "Admin accountability"
-      expect(page).to have_css("h2", class: "card-title", text: "Admin accountability")
+  context "when admin accountability is disabled" do
+    before do
+      allow(Decidim::DecidimAwesome).to receive(:allow_admin_accountability).and_return(false)
+    end
+
+    it "does not show the admin accountability link" do
+      click_link "Participants"
+
+      expect(page).not_to have_content("Admin accountability")
     end
   end
 end

@@ -11,11 +11,20 @@ module Decidim
           return permission_action unless user
           return permission_action if user.read_attribute("admin").blank?
 
-          allow! if permission_action.action == :index && permission_action.subject == :admin_action
-
           toggle_allow(config_enabled?(permission_action.subject)) if permission_action.action == :edit_config
 
+          case permission_action.action
+          when :index
+            admin_accountability_enabled?
+          end
+
           permission_action
+        end
+
+        private
+
+        def admin_accountability_enabled?
+          toggle_allow(Decidim::DecidimAwesome.allow_admin_accountability)
         end
       end
     end

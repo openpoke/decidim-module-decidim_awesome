@@ -63,5 +63,33 @@ module Decidim::DecidimAwesome::Admin
 
       it_behaves_like "permission is not set"
     end
+
+    context "when admin_accountability is enabled" do
+      before do
+        allow(Decidim::DecidimAwesome.config).to receive(:allow_admin_accountability).and_return(true)
+      end
+
+      context "when action is index" do
+        let(:action) do
+          { scope: :admin, action: :index, subject: :admin_actions }
+        end
+
+        it { is_expected.to eq true }
+      end
+    end
+
+    context "when admin_accountability is disabled" do
+      before do
+        allow(Decidim::DecidimAwesome.config).to receive(:allow_admin_accountability).and_return(false)
+      end
+
+      context "when action is index" do
+        let(:action) do
+          { scope: :admin, action: :index, subject: :admin_actions }
+        end
+
+        it { is_expected.to eq false }
+      end
+    end
   end
 end

@@ -221,6 +221,11 @@ module Decidim
       }
     end
 
+    # allows to enable admin_accountability if true
+    config_accessor :allow_admin_accountability do
+      true
+    end
+
     #
     # HELPERS
     #
