@@ -13,18 +13,7 @@ module Decidim
 
           toggle_allow(config_enabled?(permission_action.subject)) if permission_action.action == :edit_config
 
-          case permission_action.subject
-          when :admin_accountability
-            admin_accountability_enabled?
-          end
-
           permission_action
-        end
-
-        private
-
-        def admin_accountability_enabled?
-          toggle_allow(Decidim::DecidimAwesome.allow_admin_accountability == true)
         end
       end
     end

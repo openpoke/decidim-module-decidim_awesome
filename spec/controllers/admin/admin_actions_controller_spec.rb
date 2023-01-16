@@ -27,7 +27,7 @@ module Decidim::DecidimAwesome
         end
 
         context "when admin accountability is disabled" do
-          let!(:allow_admin_accountability) { false }
+          let!(:allow_admin_accountability) { :disabled }
 
           it "returns http success" do
             get :index, params: {}

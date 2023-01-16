@@ -5,8 +5,10 @@ require "spec_helper"
 describe "Admin accountability", type: :system do
   let(:organization) { create :organization }
   let!(:user) { create :user, :admin, :confirmed, organization: organization }
+  let(:status) { true }
 
   before do
+    allow(Decidim::DecidimAwesome.config).to receive(:allow_admin_accountability).and_return(status)
     switch_to_host(organization.host)
     login_as user, scope: :user
 
@@ -22,9 +24,7 @@ describe "Admin accountability", type: :system do
   end
 
   context "when admin accountability is disabled" do
-    before do
-      allow(Decidim::DecidimAwesome).to receive(:allow_admin_accountability).and_return(false)
-    end
+    let(:status) { :disabled }
 
     it "does not show the admin accountability link" do
       click_link "Participants"

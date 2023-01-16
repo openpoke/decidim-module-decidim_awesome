@@ -49,8 +49,8 @@ module Decidim
       end
 
       initializer "decidim_awesome.admin_menu" do
-        if Decidim::DecidimAwesome.allow_admin_accountability
-          Decidim.menu :admin_user_menu do |menu|
+        Decidim.menu :admin_user_menu do |menu|
+          if DecidimAwesome.enabled? :allow_admin_accountability
             menu.add_item :admin_accountability,
                           I18n.t("menu.admin_accountability", scope: "decidim.admin", default: "Admin accountability"),
                           decidim_admin_decidim_awesome.admin_actions_path,

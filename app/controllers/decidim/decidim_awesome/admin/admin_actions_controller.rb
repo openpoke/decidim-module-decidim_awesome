@@ -7,10 +7,11 @@ module Decidim
         include NeedsAwesomeConfig
 
         layout "decidim/admin/users"
-
-        def index
-          enforce_permission_to :index, :admin_accountability
+        before_action do
+          enforce_permission_to :edit_config, :allow_admin_accountability
         end
+
+        def index; end
 
         def export_xls
           # TODO: export to xls
