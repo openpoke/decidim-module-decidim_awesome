@@ -13,6 +13,7 @@ module Decidim
 
         def index
           @admin_actions = PaperTrail::Version.where(item_type: "Decidim::ParticipatoryProcessUserRole", event: "create")
+          @removal_dates = PaperTrail::Version.where(item_type: "Decidim::ParticipatoryProcessUserRole", event: "destroy")
         end
 
         def export_xls
