@@ -9,42 +9,40 @@
         <thead>
         <tr>
           <th>
-            <%= "Role" %>
+            <%= t("role", scope: "decidim.decidim_awesome.admin.admin_accountability") %></th>
           </th>
           <th>
-            <%= "Name" %>
+            <%= t("name", scope: "decidim.decidim_awesome.admin.admin_accountability") %></th>
           </th>
           <th>
-            <%= "Email" %>
+            <%= t("email", scope: "decidim.decidim_awesome.admin.admin_accountability") %></th>
           </th>
           <th>
-            <%= "Participatory space" %>
+            <%= t("participatory_space", scope: "decidim.decidim_awesome.admin.admin_accountability") %></th>
           </th>
           <th>
-            <%= "last Sign in date" %>
+            <%= t("last_login", scope: "decidim.decidim_awesome.admin.admin_accountability") %></th>
           </th>
           <th>
-            <%= "Creation date" %>
+            <%= t("created_at", scope: "decidim.decidim_awesome.admin.admin_accountability") %></th>
           </th>
           <th>
-            <%= "Removal date" %>
+            <%= t("removal_date", scope: "decidim.decidim_awesome.admin.admin_accountability") %></th>
           </th>
         </tr>
         </thead>
         <tbody>
-        <% @user_logs.uniq { |log| log.decidim_user_id }.each do |log| %>
-          <% user = log.user %>
+        <% @user_logs.each do |log| %>
           <tr>
-            <td><%= @user_roles[log.decidim_user_id].role %></td>
-            <td><%= user.name %></td>
-            <td><%= user.email %></td>
+            <td><%= log.resource.role %></td>
+            <td><%= log.resource.user.name %></td>
+            <td><%= log.resource.user.email%></td>
             <td><%= log.participatory_space_type %></td>
-            <td><%= user.last_sign_in_at %></td>
-            <td><%= user.created_at %></td>
-            <td></td>
+            <td><%= log.resource.user.last_sign_in_at %></td>
+            <td><%= log.created_at if log.action == "create" %></td>
+            <td><%= log.action == "delete" ? log.created_at : t("currently_active", scope: "decidim.decidim_awesome.admin.admin_accountability") %></td>
           </tr>
         <% end %>
-        </tbody>
         </tbody>
       </table>
     </div>

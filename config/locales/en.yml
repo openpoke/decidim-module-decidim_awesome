@@ -359,6 +359,15 @@ en:
             success: Menu item updated successfully
           url_exists: The same URL is already configured, please edit that instead
             of creating it again.
+        admin_accountability:
+          role: Role
+          name: Name
+          email: Email
+          participatory_space: Participatory space
+          last_login: Last sign in date
+          created_at: Creation date
+          removal_date: Removal date
+          currently_active: currently active
       config:
         intergram:
           auto_no_response: It seems that no one is available to answer right now.
