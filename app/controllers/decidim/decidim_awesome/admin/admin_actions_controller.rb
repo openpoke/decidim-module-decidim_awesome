@@ -12,10 +12,7 @@ module Decidim
         end
 
         def index
-          @user_logs = Decidim::ActionLog.for_admin
-                                         .where(resource_type: "Decidim::ParticipatoryProcessUserRole",
-                                                organization: current_organization)
-                                         .where(action: %w(create delete))
+          @admin_actions = PaperTrail::Version.where(item_type: "Decidim::ParticipatoryProcessUserRole", event: "create")
         end
 
         def export_xls

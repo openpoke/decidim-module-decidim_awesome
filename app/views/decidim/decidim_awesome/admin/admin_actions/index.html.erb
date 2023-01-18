@@ -8,41 +8,19 @@
       <table class="table-list">
         <thead>
         <tr>
-          <th>
-            <%= t("role", scope: "decidim.decidim_awesome.admin.admin_accountability") %></th>
-          </th>
-          <th>
-            <%= t("name", scope: "decidim.decidim_awesome.admin.admin_accountability") %></th>
-          </th>
-          <th>
-            <%= t("email", scope: "decidim.decidim_awesome.admin.admin_accountability") %></th>
-          </th>
-          <th>
-            <%= t("participatory_space", scope: "decidim.decidim_awesome.admin.admin_accountability") %></th>
-          </th>
-          <th>
-            <%= t("last_login", scope: "decidim.decidim_awesome.admin.admin_accountability") %></th>
-          </th>
-          <th>
-            <%= t("created_at", scope: "decidim.decidim_awesome.admin.admin_accountability") %></th>
-          </th>
-          <th>
-            <%= t("removal_date", scope: "decidim.decidim_awesome.admin.admin_accountability") %></th>
-          </th>
+          <th><%= t("role", scope: "decidim.decidim_awesome.admin.admin_accountability") %></th>
+          <th><%= t("name", scope: "decidim.decidim_awesome.admin.admin_accountability") %></th>
+          <th><%= t("email", scope: "decidim.decidim_awesome.admin.admin_accountability") %></th>
+          <th><%= t("participatory_space", scope: "decidim.decidim_awesome.admin.admin_accountability") %></th>
+          <th><%= t("last_login", scope: "decidim.decidim_awesome.admin.admin_accountability") %></th>
+          <th><%= t("created_at", scope: "decidim.decidim_awesome.admin.admin_accountability") %></th>
+          <th><%= t("removal_date", scope: "decidim.decidim_awesome.admin.admin_accountability") %></th>
         </tr>
         </thead>
         <tbody>
-        <% @user_logs.each do |log| %>
-          <tr>
-            <td><%= log.resource.role %></td>
-            <td><%= log.resource.user.name %></td>
-            <td><%= log.resource.user.email%></td>
-            <td><%= log.participatory_space_type %></td>
-            <td><%= log.resource.user.last_sign_in_at %></td>
-            <td><%= log.created_at if log.action == "create" %></td>
-            <td><%= log.action == "delete" ? log.created_at : t("currently_active", scope: "decidim.decidim_awesome.admin.admin_accountability") %></td>
-          </tr>
-        <% end %>
+        <tr>
+          <%= admin_actions_table_rows(@admin_actions) %>
+        </tr>
         </tbody>
       </table>
     </div>
