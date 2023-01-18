@@ -12,12 +12,10 @@ module Decidim
         end
 
         def index
-          participatory_processes = Decidim::ParticipatoryProcess.where(organization: current_organization)
-          roles = [:valuator, :admin, :moderator, :collaborator]
-          user_roles = Decidim::ParticipatoryProcessUserRole.where(participatory_process: participatory_processes, role: roles)
-          user_ids = user_roles.pluck(:decidim_user_id).uniq
-          @user_logs = Decidim::ActionLog.where(decidim_user_id: user_ids)
-          @user_roles = user_roles.index_by(&:decidim_user_id)
+          @user_logs = Decidim::ActionLog.for_admin
+                                         .where(resource_type: "Decidim::ParticipatoryProcessUserRole",
+                                                organization: current_organization)
+                                         .where(action: %w(create delete))
         end
 
         def export_xls
