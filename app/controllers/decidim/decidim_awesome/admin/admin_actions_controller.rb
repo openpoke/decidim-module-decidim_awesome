@@ -22,7 +22,7 @@ module Decidim
         private
 
         def admin_actions
-          @admin_actions = PaperTrail::Version.where(item_type: "Decidim::ParticipatoryProcessUserRole", event: "create")
+          @admin_actions ||= PaperTrail::Version.where(item_type: "Decidim::ParticipatoryProcessUserRole", event: "create")
                                               .page(params[:page]).per(params[:per_page])
         end
       end
