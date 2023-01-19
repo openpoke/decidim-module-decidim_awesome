@@ -11,10 +11,8 @@ module Decidim
 
             content_tag :tr do
               concat content_tag(:td, role_from_papertrail(log))
-              concat content_tag(:td, user.name.presence || t("decidim.decidim_awesome.admin.admin_accountability.missing_info"),
-                                 class: user.name.blank? ? "text-warning" : nil)
-              concat content_tag(:td, user.email.presence || t("decidim.decidim_awesome.admin.admin_accountability.missing_info"),
-                                 class: user.email.blank? ? "text-warning" : nil)
+              concat content_tag(:td, user.name, class: user.name.blank? ? "text-warning" : nil)
+              concat content_tag(:td, user.email, class: user.email.blank? ? "text-warning" : nil)
               concat content_tag(:td, nil)
               concat content_tag(:td, user.last_sign_in_at ? I18n.l(user.last_sign_in_at, format: :short) : "")
               concat content_tag(:td, I18n.l(log.changeset["created_at"].compact.last, format: :short))
