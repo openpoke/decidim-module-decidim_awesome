@@ -5,6 +5,7 @@ module Decidim
     module Admin
       class AdminActionsController < DecidimAwesome::Admin::ApplicationController
         include NeedsAwesomeConfig
+        include Decidim::Admin::Filterable
 
         layout "decidim/admin/users"
         before_action do
