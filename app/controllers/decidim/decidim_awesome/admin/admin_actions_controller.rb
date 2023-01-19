@@ -14,6 +14,7 @@ module Decidim
 
         def index
           @admin_actions = PaperTrail::Version.where(item_type: "Decidim::ParticipatoryProcessUserRole", event: "create")
+                                              .page(params[:page]).per(params[:per_page])
         end
 
         def export_xls
