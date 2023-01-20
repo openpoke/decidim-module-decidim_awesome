@@ -13,7 +13,7 @@ module Decidim
               concat content_tag(:td, role_from_papertrail(log))
               concat content_tag(:td, user.name, class: user.name.blank? ? "text-warning" : nil)
               concat content_tag(:td, user.email, class: user.email.blank? ? "text-warning" : nil)
-              concat content_tag(:td, nil)
+              concat content_tag(:td, participatory_space_type(log) || t("decidim.decidim_awesome.admin.admin_accountability.missing_info"))
               concat content_tag(:td, user.last_sign_in_at ? I18n.l(user.last_sign_in_at, format: :short) : "")
               concat content_tag(:td, I18n.l(log.changeset["created_at"].compact.last, format: :short))
               concat content_tag(:td, removal_date ? I18n.l(removal_date, format: :short) : t("decidim.decidim_awesome.admin.admin_accountability.currently_active"),
@@ -43,6 +43,11 @@ module Decidim
           end
 
           role == "admin" ? "administrator" : role
+        end
+
+        def participatory_space_type(log)
+          Decidim::ActionLog.find_by(resource_type: 'Decidim::ParticipatoryProcessUserRole',
+                                     resource_id: log.changeset["decidim_user_id"][1]).try(:participatory_space_type)
         end
       end
     end
