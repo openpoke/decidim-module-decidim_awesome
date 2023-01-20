@@ -7,7 +7,7 @@ module Decidim
         include NeedsAwesomeConfig
         include Decidim::Admin::Filterable
 
-        helper_method :admin_actions, :removal_dates
+        helper_method :admin_actions, :admin_actions_destroy
 
         layout "decidim/admin/users"
 
@@ -29,8 +29,8 @@ module Decidim
                                                 .per(params[:per_page])
         end
 
-        def removal_dates
-          @removal_dates ||= PaperTrail::Version.where(item_type: "Decidim::ParticipatoryProcessUserRole", event: "destroy")
+        def admin_actions_destroy
+          @admin_actions_destroy ||= PaperTrail::Version.where(item_type: "Decidim::ParticipatoryProcessUserRole", event: "destroy")
         end
       end
     end

@@ -7,7 +7,7 @@ module Decidim
         def admin_actions_table_rows(admin_actions)
           admin_actions.map do |log|
             user = Decidim::User.find(log.changeset["decidim_user_id"].last)
-            removal_date = removal_dates.find { |date| date.item_id == log.item_id }.try(:created_at)
+            removal_date = admin_actions_destroy.find { |date| date.item_id == log.item_id }.try(:created_at)
 
             content_tag :tr do
               concat content_tag(:td, role_from_papertrail(log))
