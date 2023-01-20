@@ -24,10 +24,6 @@ module Decidim
 
         private
 
-        def removal_dates
-          @removal_dates ||= PaperTrail::Version.where(item_type: "Decidim::ParticipatoryProcessUserRole", event: "destroy")
-        end
-
         def role_from_papertrail(log)
           logs_update = PaperTrail::Version.where(item_type: "Decidim::ParticipatoryProcessUserRole", event: %w(update))
           role = ""
