@@ -46,7 +46,7 @@ module Decidim
         end
 
         def participatory_space_type(log)
-          Decidim::ActionLog.find_by(resource_type: 'Decidim::ParticipatoryProcessUserRole',
+          Decidim::ActionLog.find_by(resource_type: "Decidim::ParticipatoryProcessUserRole",
                                      resource_id: log.changeset["decidim_user_id"][1]).try(:participatory_space_type)
         end
       end
