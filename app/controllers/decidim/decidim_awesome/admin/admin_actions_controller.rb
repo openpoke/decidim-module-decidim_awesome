@@ -32,7 +32,7 @@ module Decidim
         private
 
         def admin_actions_destroy
-          @admin_actions_destroy ||= PaperTrail::Version.where(item_type: Decidim::DecidimAwesome.user_roles, event: "destroy")
+          @admin_actions_destroy ||= PaperTrail::Version.where(item_type: types_user_roles, event: "destroy")
         end
 
         def types_user_roles

@@ -22,9 +22,17 @@
         </tr>
         </thead>
         <tbody>
-        <tr>
-          <%= admin_actions_table_rows(admin_actions) %>
-        </tr>
+        <% admin_actions.each do |admin_action| %>
+          <tr>
+            <td><%= role_from_papertrail(admin_action) %></td>
+            <td><%= admin_action_user(admin_action).name %></td>
+            <td><%= admin_action_user(admin_action).email %></td>
+            <td><%= participatory_space_type(admin_action) %></td>
+            <td><%= admin_action_user(admin_action).last_sign_in_at ? I18n.l(admin_action_user(admin_action).last_sign_in_at, format: :short) : "" %></td>
+            <td><%= I18n.l(admin_action.changeset["created_at"].last, format: :short) %></td>
+            <td class="<%= currently_active == removal_date(admin_action) ? "text-success" : nil %>"><%= removal_date(admin_action) %></td>
+          </tr>
+        <% end %>
         </tbody>
       </table>
       <%= paginate admin_actions, theme: "decidim" %>

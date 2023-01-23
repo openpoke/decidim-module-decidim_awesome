@@ -4,46 +4,29 @@ module Decidim
   module DecidimAwesome
     module Admin
       module AdminActionsHelper
-        def admin_actions_table_rows(admin_actions)
-          admin_actions.map do |log|
-            user = Decidim::User.find(log.changeset["decidim_user_id"].last)
-            removal_date = admin_actions_destroy.find { |date| date.item_id == log.item_id }.try(:created_at)
 
-            content_tag :tr do
-              concat content_tag(:td, role_from_papertrail(log))
-              concat content_tag(:td, user.name, class: user.name.blank? ? "text-warning" : nil)
-              concat content_tag(:td, user.email, class: user.email.blank? ? "text-warning" : nil)
-              concat content_tag(:td, participatory_space_type(log) || t("decidim.decidim_awesome.admin.admin_accountability.missing_info"))
-              concat content_tag(:td, user.last_sign_in_at ? I18n.l(user.last_sign_in_at, format: :short) : "")
-              concat content_tag(:td, I18n.l(log.changeset["created_at"].compact.last, format: :short))
-              concat content_tag(:td, removal_date ? I18n.l(removal_date, format: :short) : t("decidim.decidim_awesome.admin.admin_accountability.currently_active"),
-                                 class: removal_date.nil? ? "text-success" : nil)
-            end
-          end.join.html_safe
-        end
-
-        private
-
-        def role_from_papertrail(log)
-          logs_update = PaperTrail::Version.where(item_type: types_user_roles, event: %w(update))
-          role = ""
-
-          if logs_update.exists?(item_id: log.item_id)
-            logs_update.map do |log_update|
-              parts = log_update.object_changes.split("\n")
-              role_index = parts.index("role:") + 2
-              role = parts[role_index].strip.tr("^A-Za-z0-9", "")
-            end.last
-          else
-            role = log.changeset["role"].compact.last
-          end
-
+        def role_from_papertrail(admin_action)
+          destroy_action = PaperTrail::Version.find_by(item_type: admin_action.item_type, event: "destroy", item_id: admin_action.item_id)
+          role = destroy_action&.reify&.role || admin_action.item&.role
           role == "admin" ? "administrator" : role
         end
 
-        def participatory_space_type(log)
-          Decidim::ActionLog.find_by(resource_type: types_user_roles,
-                                     resource_id: log.changeset["decidim_user_id"][1]).try(:participatory_space_type)
+        def participatory_space_type(admin_action)
+          Decidim::ActionLog.find_by(resource_id: admin_action.changeset["decidim_user_id"].last).try(:participatory_space_type)
+        end
+
+        def admin_action_user(admin_action)
+          Decidim::User.find_by(id: admin_action.changeset["decidim_user_id"].last)
+        end
+
+        def removal_date(admin_action)
+          removal_date = admin_actions_destroy.find { |date| date.item_id == admin_action.item_id }.try(:created_at)
+
+          removal_date ? I18n.l(removal_date, format: :short) : currently_active
+        end
+
+        def currently_active
+          t("decidim.decidim_awesome.admin.admin_accountability.currently_active")
         end
       end
     end
