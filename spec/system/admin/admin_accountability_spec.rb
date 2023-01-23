@@ -6,7 +6,7 @@ describe "Admin accountability", type: :system do
   let(:organization) { create :organization }
   let!(:admin) { create :user, :admin, :confirmed, organization: organization }
 
-  let(:administrator) { create(:user, organization: organization, last_sign_in_at: Time.current - 1.day) }
+  let(:administrator) { create(:user, organization: organization, last_sign_in_at: 1.day.ago) }
   let(:valuator) { create(:user, organization: organization) }
   let(:collaborator) { create(:user, organization: organization) }
   let(:moderator) { create(:user, organization: organization) }
@@ -42,13 +42,13 @@ describe "Admin accountability", type: :system do
 
   describe "admin action list" do
     context "when there are admin actions" do
-      datetime = (Time.current - 1.day).strftime("%d/%m/%Y %H:%M")
+      datetime = (1.day.ago).strftime("%d/%m/%Y %H:%M")
 
       before do
-        create(:participatory_process_user_role, user: administrator, participatory_process: participatory_process, role: "admin", created_at: Time.current - 1.day)
-        create(:participatory_process_user_role, user: valuator, participatory_process: participatory_process, role: "valuator", created_at: Time.current - 1.day)
-        create(:participatory_process_user_role, user: collaborator, participatory_process: participatory_process, role: "collaborator", created_at: Time.current - 1.day)
-        create(:participatory_process_user_role, user: moderator, participatory_process: participatory_process, role: "moderator", created_at: Time.current - 1.day)
+        create(:participatory_process_user_role, user: administrator, participatory_process: participatory_process, role: "admin", created_at: 1.day.ago)
+        create(:participatory_process_user_role, user: valuator, participatory_process: participatory_process, role: "valuator", created_at: 1.day.ago)
+        create(:participatory_process_user_role, user: collaborator, participatory_process: participatory_process, role: "collaborator", created_at: 1.day.ago)
+        create(:participatory_process_user_role, user: moderator, participatory_process: participatory_process, role: "moderator", created_at: 1.day.ago)
 
         user_to_delete = Decidim::ParticipatoryProcessUserRole.find_by(user: collaborator)
         user_to_delete.destroy

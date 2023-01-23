@@ -29,8 +29,6 @@ module Decidim
                                                 .per(params[:per_page])
         end
 
-        private
-
         def admin_actions_destroy
           @admin_actions_destroy ||= PaperTrail::Version.where(item_type: types_user_roles, event: "destroy")
         end
