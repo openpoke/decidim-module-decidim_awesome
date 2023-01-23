@@ -4,7 +4,6 @@ module Decidim
   module DecidimAwesome
     module Admin
       module AdminActionsHelper
-
         def role_from_papertrail(admin_action)
           destroy_action = PaperTrail::Version.find_by(item_type: admin_action.item_type, event: "destroy", item_id: admin_action.item_id)
           role = destroy_action&.reify&.role || admin_action.item&.role
