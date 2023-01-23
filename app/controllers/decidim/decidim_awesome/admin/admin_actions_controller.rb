@@ -7,7 +7,7 @@ module Decidim
         include NeedsAwesomeConfig
         include Decidim::Admin::Filterable
 
-        helper_method :admin_actions, :admin_actions_destroy
+        helper_method :admin_actions, :admin_actions_destroy, :types_user_roles
 
         layout "decidim/admin/users"
 
@@ -24,13 +24,19 @@ module Decidim
         private
 
         def admin_actions
-          @admin_actions ||= PaperTrail::Version.where(item_type: "Decidim::ParticipatoryProcessUserRole", event: "create")
+          @admin_actions ||= PaperTrail::Version.where(item_type: types_user_roles, event: "create")
                                                 .page(params[:page])
                                                 .per(params[:per_page])
         end
 
+        private
+
         def admin_actions_destroy
-          @admin_actions_destroy ||= PaperTrail::Version.where(item_type: "Decidim::ParticipatoryProcessUserRole", event: "destroy")
+          @admin_actions_destroy ||= PaperTrail::Version.where(item_type: Decidim::DecidimAwesome.user_roles, event: "destroy")
+        end
+
+        def types_user_roles
+          @types_user_roles ||= Decidim::DecidimAwesome.user_roles
         end
       end
     end

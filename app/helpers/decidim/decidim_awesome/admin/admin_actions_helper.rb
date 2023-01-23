@@ -25,7 +25,7 @@ module Decidim
         private
 
         def role_from_papertrail(log)
-          logs_update = PaperTrail::Version.where(item_type: "Decidim::ParticipatoryProcessUserRole", event: %w(update))
+          logs_update = PaperTrail::Version.where(item_type: types_user_roles, event: %w(update))
           role = ""
 
           if logs_update.exists?(item_id: log.item_id)
@@ -42,7 +42,7 @@ module Decidim
         end
 
         def participatory_space_type(log)
-          Decidim::ActionLog.find_by(resource_type: "Decidim::ParticipatoryProcessUserRole",
+          Decidim::ActionLog.find_by(resource_type: types_user_roles,
                                      resource_id: log.changeset["decidim_user_id"][1]).try(:participatory_space_type)
         end
       end
