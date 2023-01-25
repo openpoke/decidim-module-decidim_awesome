@@ -22,15 +22,15 @@
         </tr>
         </thead>
         <tbody>
-        <% admin_actions.each do |admin_action| %>
+        <% admin_actions.each do |log| %>
           <tr>
-            <td><%= admin_action.role %></td>
-            <td><%= admin_action.user.name %></td>
-            <td><%= admin_action.user.email %></td>
-            <td><%= admin_action.participatory_space_type %></td>
-            <td><%= admin_action.user.last_sign_in_at ? I18n.l(admin_action.user.last_sign_in_at, format: :short) : "" %></td>
-            <td><%= I18n.l(admin_action.created_at, format: :short) %></td>
-            <td class="<%= admin_action.currently_active == admin_action.removal_date ? "text-success" : nil %>"><%= admin_action.removal_date %></td>
+            <td><%= log.present.role %></td>
+            <td><%= log.present.user.name %></td>
+            <td><%= log.present.user.email %></td>
+            <td><%= log.present.participatory_space_name %></td>
+            <td><%= log.present.user.last_sign_in_at ? I18n.l(log.present.user.last_sign_in_at, format: :short) : "" %></td>
+            <td><%= I18n.l(log.present.created_at, format: :short) %></td>
+            <td class="<%= log.present.currently_active == log.present.removal_date ? "text-success" : nil %>"><%= log.present.removal_date %></td>
           </tr>
         <% end %>
         </tbody>
