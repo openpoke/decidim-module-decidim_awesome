@@ -27,7 +27,7 @@
             <td><%= log.present.role %></td>
             <td><%= log.present.user.name %></td>
             <td><%= log.present.user.email %></td>
-            <td><%= log.present.participatory_space_name %></td>
+            <td><%= link_to log.present.participatory_space_name, log.present.user_roles_path %></td>
             <td><%= log.present.user.last_sign_in_at ? I18n.l(log.present.user.last_sign_in_at, format: :short) : "" %></td>
             <td><%= I18n.l(log.present.created_at, format: :short) %></td>
             <td class="<%= log.present.currently_active == log.present.removal_date ? "text-success" : nil %>"><%= log.present.removal_date %></td>

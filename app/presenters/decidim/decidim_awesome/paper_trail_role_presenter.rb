@@ -19,7 +19,7 @@ module Decidim
       end
 
       def participatory_space_name
-        "#{participatory_space_type} #{translated_attribute participatory_space&.title}"
+        "#{participatory_space_type}, #{translated_attribute participatory_space&.title}"
       end
 
       def participatory_space
@@ -28,6 +28,16 @@ module Decidim
 
       def participatory_space_type
         Decidim::ActionLog.find_by(resource_id: entry.changeset["decidim_user_id"].last).try(:participatory_space_type)
+      end
+
+      def user_roles_path
+        slug = participatory_space.slug
+        helper_name = "#{participatory_space_type.demodulize.underscore}_user_roles_path"
+        engine_name = "#{participatory_space_type.to_s.pluralize}::AdminEngine"
+        routes = engine_name.constantize.routes.url_helpers
+        params = { "#{participatory_space_type.demodulize.underscore}_slug": slug }
+
+        routes.send(helper_name, params)
       end
 
       def user
