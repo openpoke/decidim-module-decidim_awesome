@@ -228,7 +228,7 @@ module Decidim
     end
 
     # Roles for which it is necessary to show admin_accountability
-    config_accessor :user_roles do
+    config_accessor :admin_user_roles do
       %w(Decidim::AssemblyUserRole Decidim::ParticipatoryProcessUserRole Decidim::ConferencesUserRole)
     end
 

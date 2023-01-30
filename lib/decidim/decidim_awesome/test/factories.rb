@@ -23,6 +23,14 @@ FactoryBot.define do
     organization { create :organization }
   end
 
+  factory :paper_trail_version, class: Decidim::DecidimAwesome::PaperTrailVersion do
+    item_id { 1 }
+    item_type { "Decidim::AssemblyUserRole" }
+    event { "create" }
+    whodunnit { user.id }
+    created_at { 1.hour.ago }
+  end
+
   factory :map_component, parent: :component do
     name { Decidim::Components::Namer.new(participatory_space.organization.available_locales, :proposals).i18n_name }
     manifest_name { :awesome_map }
