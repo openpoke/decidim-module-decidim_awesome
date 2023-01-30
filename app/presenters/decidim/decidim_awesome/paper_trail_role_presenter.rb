@@ -15,7 +15,7 @@ module Decidim
 
       def role
         role = destroy_action(entry)&.reify&.role || entry.item&.role
-        role == "admin" ? "administrator" : role
+        I18n.t("roles.#{role}", scope: "decidim.decidim_awesome.admin.admin_accountability", default: role)
       end
 
       def participatory_space_name

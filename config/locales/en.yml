@@ -115,6 +115,11 @@ en:
           participatory_space: Participatory space
           removal_date: Removal date
           role: Role
+          roles:
+            admin: Administrator
+            moderator: Moderator
+            valuator: Valuator
+            collaborator: Collaborator
         checks:
           index:
             admin_head_tags: Awesome tags included in the admin application header
