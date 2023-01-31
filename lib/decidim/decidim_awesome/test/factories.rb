@@ -24,10 +24,9 @@ FactoryBot.define do
   end
 
   factory :paper_trail_version, class: Decidim::DecidimAwesome::PaperTrailVersion do
-    item_id { 1 }
-    item_type { "Decidim::AssemblyUserRole" }
+    item_id { user.id }
+    item_type { "Decidim::ParticipatoryProcessUserRole" }
     event { "create" }
-    whodunnit { user.id }
     created_at { 1.hour.ago }
   end
 
