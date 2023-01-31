@@ -151,5 +151,36 @@ describe "Admin accountability", type: :system do
         end
       end
     end
+
+    context "when user listed has been removed" do
+      let(:valuator) { create(:user, :deleted, organization: organization, created_at: user_creation_date) }
+
+      before do
+        create(:participatory_process_user_role, user: collaborator, participatory_process: participatory_process, role: "collaborator", created_at: 3.days.ago)
+        collaborator.destroy
+        create(:participatory_process_user_role, user: valuator, participatory_process: participatory_process, role: "valuator", created_at: 2.days.ago)
+
+        click_link "Participants"
+        click_link "Admin accountability"
+      end
+
+      it "shows the user as removed", versioning: true do
+        within all("table tr")[1] do
+          expect(page).to have_content("Valuator")
+          expect(page).to have_content("Deleted user")
+          expect(page).to have_content(2.days.ago.strftime("%d/%m/%Y %H:%M"))
+          expect(page).not_to have_content(Time.current.strftime("%d/%m/%Y %H:%M"))
+          expect(page).to have_content("Currently active")
+        end
+
+        within all("table tr")[2] do
+          expect(page).to have_content("Collaborator")
+          expect(page).to have_content("User not in the database")
+          expect(page).to have_content(3.days.ago.strftime("%d/%m/%Y %H:%M"))
+          expect(page).not_to have_content(Time.current.strftime("%d/%m/%Y %H:%M"))
+          expect(page).to have_content("Currently active")
+        end
+      end
+    end
   end
 end

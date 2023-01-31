@@ -74,7 +74,18 @@ module Decidim
       end
 
       def user
-        Decidim::User.find_by(id: entry.changeset["decidim_user_id"]&.last)
+        @user ||= Decidim::User.find_by(id: entry.changeset["decidim_user_id"]&.last)
+      end
+
+      def user_name
+        return I18n.t("missing_user", scope: "decidim.decidim_awesome.admin.admin_accountability") unless user
+        return I18n.t("deleted_user", scope: "decidim.decidim_awesome.admin.admin_accountability") if user.deleted?
+
+        user&.name
+      end
+
+      def user_email
+        user&.email
       end
 
       def created_at

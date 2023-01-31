@@ -108,6 +108,7 @@ en:
         admin_accountability:
           created_at: Role created at
           currently_active: Currently active
+          deleted_user: Deleted user
           email: Email
           index:
             description: Listed here you'll find all users that have had some role
@@ -116,6 +117,7 @@ en:
             title: Admin accountability
           last_login: Last sign in date
           missing_info: "(missing information)"
+          missing_user: User not in the database
           name: Name
           never_logged: Never logged yet
           participatory_space: Participatory space
