@@ -57,6 +57,9 @@ describe "Admin accountability", type: :system do
       end
 
       it "shows the correct information for each user", versioning: true do
+        expect(page).to have_link("Processes > #{participatory_process.title["en"]}",
+                                  href: "/admin/participatory_processes/#{participatory_process.slug}/user_roles", count: 4)
+
         within all("table tr")[1] do
           expect(page).to have_content("Moderator")
           expect(page).to have_content(moderator.name)

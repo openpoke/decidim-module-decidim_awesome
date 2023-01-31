@@ -12,9 +12,10 @@ module Decidim
         @html = html
       end
 
-      # try to use the object in the database or recosntrut it from a destroyed event
+      # try to use the object in the database if exists
+      # Note that "reify" does not work on "create" events
       def item
-        @item ||= entry&.item || entry&.reify
+        @item ||= entry&.item
       end
 
       # Finds the destroyed entry if exists
@@ -24,12 +25,12 @@ module Decidim
 
       alias destroyed? destroy_entry
 
-      # try to reconstruct a destroyed event or use the one existing in the database
+      # try to reconstruct a destroyed event
       def destroy_item
-        @destroy_item ||= destroy_entry&.reify || destroy_entry&.item
+        @destroy_item ||= destroy_entry&.reify
       end
 
-      # participatory spaces is in the log if the role hasn't been removed
+      # participatory spaces is in the normal entry if the role hasn't been removed
       # otherwise is in the removed role log entry
       def participatory_space
         item&.participatory_space || destroy_item&.participatory_space
@@ -87,7 +88,7 @@ module Decidim
       end
 
       def destroyed_at
-        destroy_entry&.item&.created_at || destroy_entry&.created_at
+        destroy_entry&.created_at
       end
 
       def removal_date
