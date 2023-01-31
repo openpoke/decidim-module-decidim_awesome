@@ -17,8 +17,8 @@ module Decidim
 
         def index; end
 
-        def export_xls
-          # TODO: export to xls
+        def export
+          # TODO: export to xls, csv
         end
 
         private

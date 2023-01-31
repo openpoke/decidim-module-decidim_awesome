@@ -3,9 +3,8 @@
 require "spec_helper"
 
 describe "Admin accountability", type: :system do
-  let(:user_creation_date) { 5.days.ago }
-  let(:creation_date) { 3.days.ago }
-  let(:login_date) { 2.days.ago }
+  let(:user_creation_date) { 7.days.ago }
+  let(:login_date) { 6.days.ago }
   let(:organization) { create :organization }
   let!(:admin) { create :user, :admin, :confirmed, organization: organization }
 
@@ -46,49 +45,106 @@ describe "Admin accountability", type: :system do
   describe "admin action list" do
     context "when there are admin actions" do
       before do
-        create(:participatory_process_user_role, user: administrator, participatory_process: participatory_process, role: "admin", created_at: creation_date)
-        create(:participatory_process_user_role, user: valuator, participatory_process: participatory_process, role: "valuator", created_at: creation_date)
-        create(:participatory_process_user_role, user: collaborator, participatory_process: participatory_process, role: "collaborator", created_at: creation_date)
-        create(:participatory_process_user_role, user: moderator, participatory_process: participatory_process, role: "moderator", created_at: creation_date)
+        create(:participatory_process_user_role, user: administrator, participatory_process: participatory_process, role: "admin", created_at: 4.days.ago)
+        create(:participatory_process_user_role, user: valuator, participatory_process: participatory_process, role: "valuator", created_at: 3.days.ago)
+        create(:participatory_process_user_role, user: collaborator, participatory_process: participatory_process, role: "collaborator", created_at: 2.days.ago)
+        create(:participatory_process_user_role, user: moderator, participatory_process: participatory_process, role: "moderator", created_at: 1.day.ago)
 
-        user_to_delete = Decidim::ParticipatoryProcessUserRole.find_by(user: collaborator)
-        user_to_delete.destroy
+        Decidim::ParticipatoryProcessUserRole.find_by(user: collaborator).destroy
 
         click_link "Participants"
         click_link "Admin accountability"
       end
 
       it "shows the correct information for each user", versioning: true do
-        expect(page).to have_content("Administrator", count: 1)
-        expect(page).to have_content("Valuator", count: 1)
-        expect(page).to have_content("Collaborator", count: 1)
-        expect(page).to have_content("Moderator", count: 1)
+        within all("table tr")[1] do
+          expect(page).to have_content("Moderator")
+          expect(page).to have_content(moderator.name)
+          expect(page).to have_content(moderator.email)
+          expect(page).to have_content(1.day.ago.strftime("%d/%m/%Y %H:%M"))
+          expect(page).to have_content("Currently active")
+          expect(page).not_to have_content(login_date.strftime("%d/%m/%Y %H:%M"))
+          expect(page).to have_content("Never logged yet")
+          expect(page).not_to have_content(Time.current.strftime("%d/%m/%Y %H:%M"))
+        end
 
-        expect(page).to have_content(administrator.name, count: 1)
-        expect(page).to have_content(valuator.name, count: 1)
-        expect(page).to have_content(collaborator.name, count: 1)
-        expect(page).to have_content(moderator.name, count: 1)
+        within all("table tr")[2] do
+          expect(page).to have_content("Collaborator")
+          expect(page).to have_content(collaborator.name)
+          expect(page).to have_content(collaborator.email)
+          expect(page).to have_content(2.days.ago.strftime("%d/%m/%Y %H:%M"))
+          expect(page).not_to have_content(login_date.strftime("%d/%m/%Y %H:%M"))
+          expect(page).to have_content("Never logged yet")
+          expect(page).to have_content(Time.current.strftime("%d/%m/%Y %H:%M"))
+          expect(page).not_to have_content("Currently active")
+        end
 
-        expect(page).to have_content(administrator.email, count: 1)
-        expect(page).to have_content(valuator.email, count: 1)
-        expect(page).to have_content(collaborator.email, count: 1)
-        expect(page).to have_content(moderator.email, count: 1)
-      end
+        within all("table tr")[3] do
+          expect(page).to have_content("Valuator")
+          expect(page).to have_content(valuator.name)
+          expect(page).to have_content(valuator.email)
+          expect(page).to have_content(3.days.ago.strftime("%d/%m/%Y %H:%M"))
+          expect(page).to have_content("Currently active")
+          expect(page).not_to have_content(login_date.strftime("%d/%m/%Y %H:%M"))
+          expect(page).to have_content("Never logged yet")
+          expect(page).not_to have_content(Time.current.strftime("%d/%m/%Y %H:%M"))
+        end
 
-      it "shows dates", versioning: true do
-        expect(page).to have_css("table tr td:nth-child(6)", text: creation_date.strftime("%d/%m/%Y %H:%M"), count: 4)
-      end
-
-      context "when the user was logged in" do
-        it "shows the last login date", versioning: true do
-          expect(page).to have_css("table tr td:nth-child(5)", text: login_date.strftime("%d/%m/%Y %H:%M"), count: 1)
+        within all("table tr")[4] do
+          expect(page).to have_content("Administrator")
+          expect(page).to have_content(administrator.name)
+          expect(page).to have_content(administrator.email)
+          expect(page).to have_content(4.days.ago.strftime("%d/%m/%Y %H:%M"))
+          expect(page).to have_content("Currently active")
+          expect(page).to have_content(login_date.strftime("%d/%m/%Y %H:%M"))
+          expect(page).not_to have_content("Never logged yet")
+          expect(page).not_to have_content(Time.current.strftime("%d/%m/%Y %H:%M"))
         end
       end
+    end
 
-      context "when the user was deleted" do
-        it "shows the user as deleted", versioning: true do
-          expect(page).to have_content("Currently active", count: 3)
-          expect(page).to have_css("table tr td:nth-child(7)", text: Time.current.strftime("%d/%m/%Y %H:%M"), count: 1)
+    context "when there are multiple assignations for the same user" do
+      before do
+        create(:participatory_process_user_role, user: collaborator, participatory_process: participatory_process, role: "collaborator", created_at: 3.days.ago)
+
+        Decidim::ParticipatoryProcessUserRole.find_by(user: collaborator).destroy
+
+        create(:participatory_process_user_role, user: collaborator, participatory_process: participatory_process, role: "valuator", created_at: 2.days.ago)
+
+        Decidim::ParticipatoryProcessUserRole.find_by(user: collaborator).destroy
+
+        create(:participatory_process_user_role, user: collaborator, participatory_process: participatory_process, role: "collaborator", created_at: 1.day.ago)
+
+        click_link "Participants"
+        click_link "Admin accountability"
+      end
+
+      it "shows currently active", versioning: true do
+        within all("table tr")[1] do
+          expect(page).to have_content("Collaborator")
+          expect(page).to have_content(collaborator.name)
+          expect(page).to have_content(collaborator.email)
+          expect(page).to have_content(1.day.ago.strftime("%d/%m/%Y %H:%M"))
+          expect(page).not_to have_content(Time.current.strftime("%d/%m/%Y %H:%M"))
+          expect(page).to have_content("Currently active")
+        end
+
+        within all("table tr")[2] do
+          expect(page).to have_content("Valuator")
+          expect(page).to have_content(collaborator.name)
+          expect(page).to have_content(collaborator.email)
+          expect(page).to have_content(2.days.ago.strftime("%d/%m/%Y %H:%M"))
+          expect(page).to have_content(Time.current.strftime("%d/%m/%Y %H:%M"))
+          expect(page).not_to have_content("Currently active")
+        end
+
+        within all("table tr")[3] do
+          expect(page).to have_content("Collaborator")
+          expect(page).to have_content(collaborator.name)
+          expect(page).to have_content(collaborator.email)
+          expect(page).to have_content(3.days.ago.strftime("%d/%m/%Y %H:%M"))
+          expect(page).to have_content(Time.current.strftime("%d/%m/%Y %H:%M"))
+          expect(page).not_to have_content("Currently active")
         end
       end
     end

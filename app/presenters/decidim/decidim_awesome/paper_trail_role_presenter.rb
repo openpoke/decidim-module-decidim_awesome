@@ -73,17 +73,25 @@ module Decidim
       end
 
       def user
-        Decidim::User.find_by(id: entry.changeset["decidim_user_id"].last)
+        Decidim::User.find_by(id: entry.changeset["decidim_user_id"]&.last)
+      end
+
+      def created_at
+        entry.changeset["created_at"]&.last || entry&.created_at
       end
 
       def created_date
-        I18n.l(entry&.created_at, format: :short)
+        I18n.l(created_at, format: :short)
       rescue I18n::ArgumentError
         ""
       end
 
+      def destroyed_at
+        destroy_entry&.item&.created_at || destroy_entry&.created_at
+      end
+
       def removal_date
-        I18n.l(destroy_entry&.created_at, format: :short)
+        I18n.l(destroyed_at, format: :short)
       rescue I18n::ArgumentError
         info_text("currently_active", klass: "text-success")
       end
