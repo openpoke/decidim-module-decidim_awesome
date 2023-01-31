@@ -106,20 +106,26 @@ en:
     decidim_awesome:
       admin:
         admin_accountability:
-          created_at: Creation date
+          created_at: Role created at
           currently_active: Currently active
           email: Email
+          index:
+            description: Listed here you'll find all users that have had some role
+              in the administration of a participatory space. Normal admins are not
+              listed.
+            title: Admin accountability
           last_login: Last sign in date
           missing_info: "(missing information)"
           name: Name
+          never_logged: Never logged yet
           participatory_space: Participatory space
-          removal_date: Removal date
+          removal_date: Role removed at
           role: Role
           roles:
             admin: Administrator
+            collaborator: Collaborator
             moderator: Moderator
             valuator: Valuator
-            collaborator: Collaborator
         checks:
           index:
             admin_head_tags: Awesome tags included in the admin application header

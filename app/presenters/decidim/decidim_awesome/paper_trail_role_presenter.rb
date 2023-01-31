@@ -5,58 +5,106 @@ module Decidim
     class PaperTrailRolePresenter < Decidim::Log::BasePresenter
       include TranslatableAttributes
 
-      delegate :created_at, to: :entry
+      attr_reader :entry, :html
 
-      attr_reader :entry
-
-      def initialize(entry)
+      def initialize(entry, html: true)
         @entry = entry
+        @html = html
       end
 
+      # try to use the object in the database or recosntrut it from a destroyed event
+      def item
+        @item ||= entry&.item || entry&.reify
+      end
+
+      # Finds the destroyed entry if exists
+      def destroy_entry
+        @destroy_entry ||= PaperTrail::Version.find_by(item_type: entry.item_type, event: "destroy", item_id: entry.item_id)
+      end
+
+      alias destroyed? destroy_entry
+
+      # try to reconstruct a destroyed event or use the one existing in the database
+      def destroy_item
+        @destroy_item ||= destroy_entry&.reify || destroy_entry&.item
+      end
+
+      # participatory spaces is in the log if the role hasn't been removed
+      # otherwise is in the removed role log entry
+      def participatory_space
+        item&.participatory_space || destroy_item&.participatory_space
+      end
+
+      # roles are in the destroyed event if the role has been removed
       def role
-        role = destroy_action(entry)&.reify&.role || entry.item&.role
-        I18n.t("roles.#{role}", scope: "decidim.decidim_awesome.admin.admin_accountability", default: role)
+        @role ||= destroy_item&.role || item&.role
+      end
+
+      def role_class
+        case role
+        when "admin"
+          "text-alert"
+        when "valuator"
+          "text-secondary"
+        end
+      end
+
+      def role_name
+        I18n.t(role, scope: "decidim.decidim_awesome.admin.admin_accountability.roles", default: role)
       end
 
       def participatory_space_name
-        "#{participatory_space_type}, #{translated_attribute participatory_space&.title}"
-      end
-
-      def participatory_space
-        entry.item&.participatory_space
+        "#{participatory_space_type} > #{translated_attribute participatory_space&.title}"
       end
 
       def participatory_space_type
-        Decidim::ActionLog.find_by(resource_id: entry.changeset["decidim_user_id"].last).try(:participatory_space_type)
+        I18n.t(participatory_space&.manifest&.name, scope: "decidim.admin.menu", default: entry.changeset)
       end
 
-      def user_roles_path
-        slug = participatory_space.slug
-        helper_name = "#{participatory_space_type.demodulize.underscore}_user_roles_path"
-        engine_name = "#{participatory_space_type.to_s.pluralize}::AdminEngine"
-        routes = engine_name.constantize.routes.url_helpers
-        params = { "#{participatory_space_type.demodulize.underscore}_slug": slug }
-
-        routes.send(helper_name, params)
+      # try to link to the user roles page or to the participatory space if not existing
+      def participatory_space_path
+        proxy.send("#{participatory_space.manifest.route_name}_user_roles_path")
+      rescue NoMethodError
+        begin
+          proxy.send("#{participatory_space.manifest.route_name}_path", participatory_space)
+        rescue NoMethodError
+          ""
+        end
       end
 
       def user
         Decidim::User.find_by(id: entry.changeset["decidim_user_id"].last)
       end
 
-      def removal_date
-        removal_date = destroy_action(entry)&.created_at
-        removal_date ? I18n.l(removal_date, format: :short) : currently_active
+      def created_date
+        I18n.l(entry&.created_at, format: :short)
+      rescue I18n::ArgumentError
+        ""
       end
 
-      def currently_active
-        I18n.t("decidim.decidim_awesome.admin.admin_accountability.currently_active", default: "Currently active")
+      def removal_date
+        I18n.l(destroy_entry&.created_at, format: :short)
+      rescue I18n::ArgumentError
+        info_text("currently_active", klass: "text-success")
+      end
+
+      def last_sign_in_date
+        I18n.l(user&.last_sign_in_at, format: :short)
+      rescue I18n::ArgumentError
+        info_text("never_logged")
       end
 
       private
 
-      def destroy_action(entry)
-        PaperTrail::Version.find_by(item_type: entry.item_type, event: "destroy", item_id: entry.item_id)
+      def info_text(key, klass: :muted)
+        text = I18n.t(key, scope: "decidim.decidim_awesome.admin.admin_accountability")
+        return text unless html
+
+        "<span class=\"#{klass}\">#{text}</span>".html_safe
+      end
+
+      def proxy
+        @proxy ||= Decidim::EngineRouter.admin_proxy(participatory_space)
       end
     end
   end

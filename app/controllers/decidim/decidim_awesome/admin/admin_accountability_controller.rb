@@ -3,7 +3,7 @@
 module Decidim
   module DecidimAwesome
     module Admin
-      class AdminActionsController < DecidimAwesome::Admin::ApplicationController
+      class AdminAccountabilityController < DecidimAwesome::Admin::ApplicationController
         include NeedsAwesomeConfig
         include Decidim::Admin::Filterable
 
