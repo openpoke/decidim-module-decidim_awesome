@@ -3,7 +3,7 @@
 require "spec_helper"
 
 module Decidim::DecidimAwesome
-  describe PaperTrailRolePresenter, type: :helper do
+  describe ParticipatorySpaceRolePresenter, type: :helper do
     let(:user) { create :user, organization: organization }
     let(:organization) { create :organization }
     let(:participatory_space) { create(:participatory_process, organization: organization) }
@@ -56,35 +56,47 @@ module Decidim::DecidimAwesome
         expect(subject.role).to eq("admin")
       end
 
-      it "returns the role name" do
-        expect(subject.role_name).to eq("Administrator")
+      it "returns the role name in html" do
+        expect(subject.role_name).to eq("<span class=\"text-alert\">Administrator</span>")
       end
 
-      it "returns the role class" do
-        expect(subject.role_class).to eq("text-alert")
+      context "when html is disabled" do
+        let(:html) { false }
+
+        it "returns without classes" do
+          expect(subject.role_name).to eq("Administrator")
+        end
       end
 
       context "when role is a valuator" do
         let(:role) { "valuator" }
 
-        it "returns the role name" do
-          expect(subject.role_name).to eq("Valuator")
+        it "returns the role name in html" do
+          expect(subject.role_name).to eq("<span class=\"text-secondary\">Valuator</span>")
         end
 
-        it "returns the role class" do
-          expect(subject.role_class).to eq("text-secondary")
+        context "when html is disabled" do
+          let(:html) { false }
+
+          it "returns without classes" do
+            expect(subject.role_name).to eq("Valuator")
+          end
         end
       end
 
       context "when role is a collaborator" do
         let(:role) { "collaborator" }
 
-        it "returns the role name" do
+        it "returns the role name in html" do
           expect(subject.role_name).to eq("Collaborator")
         end
 
-        it "returns the role class" do
-          expect(subject.role_class).to be_blank
+        context "when html is disabled" do
+          let(:html) { false }
+
+          it "returns without classes" do
+            expect(subject.role_name).to eq("Collaborator")
+          end
         end
       end
     end

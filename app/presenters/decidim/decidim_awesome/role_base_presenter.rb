@@ -2,25 +2,12 @@
 
 module Decidim
   module DecidimAwesome
-    class PaperTrailRolePresenter < Decidim::Log::BasePresenter
+    class RoleBasePresenter < PaperTrailBasePresenter
       include TranslatableAttributes
-
-      attr_reader :entry, :html
-
-      def initialize(entry, html: true)
-        @entry = entry
-        @html = html
-      end
-
-      # try to use the object in the database if exists
-      # Note that "reify" does not work on "create" events
-      def item
-        @item ||= entry&.item
-      end
 
       # Finds the destroyed entry if exists
       def destroy_entry
-        @destroy_entry ||= PaperTrail::Version.find_by(item_type: entry.item_type, event: "destroy", item_id: entry.item_id)
+        @destroy_entry ||= PaperTrail::Version.find_by(item_type: item_type, event: "destroy", item_id: item_id)
       end
 
       alias destroyed? destroy_entry
@@ -30,28 +17,18 @@ module Decidim
         @destroy_item ||= destroy_entry&.reify
       end
 
+      def user
+        raise "Please implement this method to return the user object"
+      end
+
+      def role_name
+        raise "Please implement this method to return the role text"
+      end
+
       # participatory spaces is in the normal entry if the role hasn't been removed
       # otherwise is in the removed role log entry
       def participatory_space
         item&.participatory_space || destroy_item&.participatory_space
-      end
-
-      # roles are in the destroyed event if the role has been removed
-      def role
-        @role ||= destroy_item&.role || item&.role
-      end
-
-      def role_class
-        case role
-        when "admin"
-          "text-alert"
-        when "valuator"
-          "text-secondary"
-        end
-      end
-
-      def role_name
-        I18n.t(role, scope: "decidim.decidim_awesome.admin.admin_accountability.roles", default: role)
       end
 
       def participatory_space_name
@@ -59,7 +36,7 @@ module Decidim
       end
 
       def participatory_space_type
-        I18n.t(participatory_space&.manifest&.name, scope: "decidim.admin.menu", default: entry.changeset)
+        I18n.t(participatory_space&.manifest&.name, scope: "decidim.admin.menu")
       end
 
       # try to link to the user roles page or to the participatory space if not existing
@@ -71,10 +48,6 @@ module Decidim
         rescue NoMethodError
           ""
         end
-      end
-
-      def user
-        @user ||= Decidim::User.find_by(id: entry.changeset["decidim_user_id"]&.last)
       end
 
       def user_name
@@ -114,7 +87,7 @@ module Decidim
         info_text("never_logged")
       end
 
-      private
+      protected
 
       def info_text(key, klass: :muted)
         text = I18n.t(key, scope: "decidim.decidim_awesome.admin.admin_accountability")

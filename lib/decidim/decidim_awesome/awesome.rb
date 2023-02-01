@@ -229,7 +229,12 @@ module Decidim
 
     # Roles for which it is necessary to show admin_accountability
     config_accessor :admin_user_roles do
-      %w(Decidim::AssemblyUserRole Decidim::ParticipatoryProcessUserRole Decidim::ConferencesUserRole)
+      {
+        "Decidim::AssemblyUserRole" => "Decidim::DecidimAwesome::ParticipatorySpaceRolePresenter",
+        "Decidim::ParticipatoryProcessUserRole" => "Decidim::DecidimAwesome::ParticipatorySpaceRolePresenter",
+        "Decidim::ConferencesUserRole" => "Decidim::DecidimAwesome::ParticipatorySpaceRolePresenter"
+        # "Decidim::UserBaseEntity" => "Decidim::DecidimAwesome::UserEntityPresenter"
+      }
     end
 
     #
