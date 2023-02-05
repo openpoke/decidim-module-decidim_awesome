@@ -101,90 +101,6 @@ module Decidim::DecidimAwesome
       end
     end
 
-    describe "#removal_date" do
-      it "returns currently active" do
-        expect(subject.removal_date).to eq("<span class=\"text-success\">Currently active</span>")
-      end
-
-      context "when html is disabled" do
-        let(:html) { false }
-
-        it "returns currently active" do
-          expect(subject.removal_date).to eq("Currently active")
-        end
-      end
-
-      context "when the role was removed" do
-        include_context "with role destroyed"
-
-        it "returns the removal date" do
-          expect(subject.removal_date).to eq(destroyed_at.strftime("%d/%m/%Y %H:%M"))
-        end
-      end
-    end
-
-    describe "#participatory_space_name" do
-      it "returns the participatory space name" do
-        expect(subject.participatory_space_name).to include("Processes")
-      end
-    end
-
-    describe "#participatory_space_type" do
-      it "returns the participatory space type" do
-        expect(subject.participatory_space_type).to eq("Processes")
-      end
-    end
-
-    describe "#participatory_space_path" do
-      it "returns the path to user roles" do
-        expect(subject.participatory_space_path).to eq("/admin/participatory_processes/#{participatory_space.slug}/user_roles")
-      end
-
-      context "when role is destroyed" do
-        include_context "with role destroyed"
-
-        it "returns the path to user roles" do
-          expect(subject.participatory_space_path).to eq("/admin/participatory_processes/#{participatory_space.slug}/user_roles")
-        end
-      end
-
-      # rubocop:disable RSpec/AnyInstance
-      context "when no user roles route exist" do
-        before do
-          allow_any_instance_of(Decidim::EngineRouter).to receive(:participatory_process_user_roles_path).and_raise(NoMethodError)
-        end
-
-        it "returns the path to user roles" do
-          expect(subject.participatory_space_path.split("?").first).to eq("/admin/participatory_processes/#{participatory_space.slug}")
-        end
-
-        context "when no participatory_space route exist" do
-          before do
-            allow_any_instance_of(Decidim::EngineRouter).to receive(:participatory_process_path).and_raise(NoMethodError)
-          end
-
-          it "returns empty" do
-            expect(subject.participatory_space_path).to be_blank
-          end
-        end
-      end
-      # rubocop:enable RSpec/AnyInstance
-    end
-
-    describe "#created_date" do
-      it "returns the creation date" do
-        expect(subject.created_date).to eq(entry.created_at.strftime("%d/%m/%Y %H:%M"))
-      end
-
-      context "when date is missing" do
-        let(:entry) { nil }
-
-        it "returns the creation date" do
-          expect(subject.created_date).to eq("")
-        end
-      end
-    end
-
     describe "#last_sign_in_date" do
       it "returns never logged in yet" do
         expect(subject.last_sign_in_date).to eq("<span class=\"muted\">Never logged yet</span>")
@@ -210,6 +126,14 @@ module Decidim::DecidimAwesome
     describe "#user" do
       it "returns the user" do
         expect(subject.user).to eq(user)
+      end
+
+      it "returns email" do
+        expect(subject.user_email).to eq(user.email)
+      end
+
+      it "returns user name" do
+        expect(subject.user_name).to eq(user.name)
       end
     end
   end
