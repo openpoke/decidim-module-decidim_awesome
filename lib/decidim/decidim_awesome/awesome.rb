@@ -223,18 +223,17 @@ module Decidim
 
     # If true, enables a new section in "Participants" where to audit all the admin roles that have been enabled/disabled historically in Decidim
     # Set to :disabled to completly remove this feature
-    config_accessor :allow_admin_accountability do
-      true
+    config_accessor :admin_accountability do
+      [:participatory_space_roles, :admin_roles]
     end
 
     # Roles for which it is necessary to show admin_accountability
-    config_accessor :admin_user_roles do
-      {
-        "Decidim::AssemblyUserRole" => "Decidim::DecidimAwesome::ParticipatorySpaceRolePresenter",
-        "Decidim::ParticipatoryProcessUserRole" => "Decidim::DecidimAwesome::ParticipatorySpaceRolePresenter",
-        "Decidim::ConferencesUserRole" => "Decidim::DecidimAwesome::ParticipatorySpaceRolePresenter"
-        # "Decidim::UserBaseEntity" => "Decidim::DecidimAwesome::UserEntityPresenter"
-      }
+    config_accessor :participatory_space_roles do
+      [
+        "Decidim::AssemblyUserRole",
+        "Decidim::ParticipatoryProcessUserRole",
+        "Decidim::ConferencesUserRole"
+      ]
     end
 
     #

@@ -25,18 +25,16 @@ module Decidim
         raise "Please implement this method to return the role text"
       end
 
-      # participatory spaces is in the normal entry if the role hasn't been removed
-      # otherwise is in the removed role log entry
       def participatory_space
-        item&.participatory_space || destroy_item&.participatory_space
+        nil
       end
 
       def participatory_space_name
-        "#{participatory_space_type} > #{translated_attribute participatory_space&.title}"
+        participatory_space_type.present? ? "#{participatory_space_type} > #{translated_attribute participatory_space&.title}" : ""
       end
 
       def participatory_space_type
-        I18n.t(participatory_space&.manifest&.name, scope: "decidim.admin.menu")
+        I18n.t(participatory_space&.manifest&.name, scope: "decidim.admin.menu") if participatory_space.present?
       end
 
       # try to link to the user roles page or to the participatory space if not existing
@@ -58,7 +56,7 @@ module Decidim
       end
 
       def user_email
-        user&.email
+        user&.email || entry.changeset["email"]&.last
       end
 
       def created_at

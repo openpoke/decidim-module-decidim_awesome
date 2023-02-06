@@ -19,6 +19,12 @@ module Decidim
         @user ||= Decidim::User.find_by(id: entry.changeset["decidim_user_id"]&.last)
       end
 
+      # participatory spaces is in the normal entry if the role hasn't been removed
+      # otherwise is in the removed role log entry
+      def participatory_space
+        item&.participatory_space || destroy_item&.participatory_space
+      end
+
       private
 
       def role_class

@@ -4,14 +4,18 @@ module Decidim
   module DecidimAwesome
     class PaperTrailVersion < PaperTrail::Version
       default_scope { order("created_at DESC") }
-      scope :role_actions, -> { where(item_type: Decidim::DecidimAwesome.admin_user_roles.keys, event: "create") }
+      scope :space_role_actions, -> { where(item_type: Decidim::DecidimAwesome.participatory_space_roles, event: "create") }
+      scope :admin_role_actions, lambda {
+        where(item_type: "Decidim::UserBaseEntity", event: %w(create update))
+          .where("object_changes LIKE '%\nroles:\n%' OR object_changes LIKE '%\nadmin:\n%'")
+      }
 
-      def presenter
-        @presenter ||= Decidim::DecidimAwesome.admin_user_roles[item_type].safe_constantize
-      end
-
-      def present
-        @present ||= presenter.new(self, html: true)
+      def present(html: true)
+        @present ||= if item_type == "Decidim::UserBaseEntity"
+                       UserEntityPresenter.new(self, html: html)
+                     else
+                       ParticipatorySpaceRolePresenter.new(self, html: html)
+                     end
       end
     end
   end

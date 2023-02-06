@@ -23,8 +23,8 @@ module Decidim::DecidimAwesome
       expect(PaperTrailVersion.all).to eq([paper_trail_version])
     end
 
-    it "returns role_actions scope correctly" do
-      expect(PaperTrailVersion.role_actions).to include(paper_trail_version)
+    it "returns space_role_actions scope correctly" do
+      expect(PaperTrailVersion.space_role_actions).to include(paper_trail_version)
     end
 
     it "present method returns a PaperTrailRolePresenter object" do
