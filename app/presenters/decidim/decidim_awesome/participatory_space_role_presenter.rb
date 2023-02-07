@@ -3,6 +3,11 @@
 module Decidim
   module DecidimAwesome
     class ParticipatorySpaceRolePresenter < RoleBasePresenter
+      # Finds the destroyed entry if exists
+      def destroy_entry
+        @destroy_entry ||= PaperTrail::Version.find_by(item_type: item_type, event: "destroy", item_id: item_id)
+      end
+
       # roles are in the destroyed event if the role has been removed
       def role
         @role ||= destroy_item&.role || item&.role

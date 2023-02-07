@@ -7,7 +7,7 @@ module Decidim
 
       # Finds the destroyed entry if exists
       def destroy_entry
-        @destroy_entry ||= PaperTrail::Version.find_by(item_type: item_type, event: "destroy", item_id: item_id)
+        nil
       end
 
       alias destroyed? destroy_entry

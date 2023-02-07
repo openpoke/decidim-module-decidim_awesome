@@ -3,10 +3,15 @@
 module Decidim
   module DecidimAwesome
     class UserEntityPresenter < RoleBasePresenter
+      # Finds the destroyed entry if exists
+      def destroy_entry
+        @destroy_entry ||= PaperTrail::Version.where(item_type: item_type, event: "update", item_id: item_id).where("id > ?", entry.id).first
+      end
+
       def roles
         @roles ||= begin
           rls = entry.changeset["roles"]&.last || []
-          rls << "admin" if user&.admin
+          rls << "admin" if entry.changeset["admin"]&.last
           rls
         end
       end

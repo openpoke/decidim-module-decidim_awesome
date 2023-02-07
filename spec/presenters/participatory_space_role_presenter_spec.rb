@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
 require "spec_helper"
+require "decidim/decidim_awesome/test/shared_examples/action_log_presenter_examples"
 
 module Decidim::DecidimAwesome
   describe ParticipatorySpaceRolePresenter, type: :helper do
@@ -30,7 +31,6 @@ module Decidim::DecidimAwesome
                                    event: "create")
     end
 
-    let(:action_log) { create(:action_log, organization: organization, resource_id: entry.reload.changeset["decidim_user_id"].last, action: "create") }
     let(:html) { true }
 
     subject { described_class.new(entry, html: html) }
@@ -101,40 +101,54 @@ module Decidim::DecidimAwesome
       end
     end
 
-    describe "#last_sign_in_date" do
-      it "returns never logged in yet" do
-        expect(subject.last_sign_in_date).to eq("<span class=\"muted\">Never logged yet</span>")
-      end
+    it_behaves_like "a user presenter"
 
-      context "when no html" do
-        let(:html) { false }
-
-        it "returns never logged in yet" do
-          expect(subject.last_sign_in_date).to eq("Never logged yet")
-        end
-      end
-
-      context "when user has logged before" do
-        let(:user) { create :user, organization: organization, last_sign_in_at: 1.day.ago }
-
-        it "returns the last sign in date" do
-          expect(subject.last_sign_in_date).to eq(1.day.ago.strftime("%d/%m/%Y %H:%M"))
-        end
+    describe "#participatory_space_name" do
+      it "returns the participatory space name" do
+        expect(subject.participatory_space_name).to include("Processes")
       end
     end
 
-    describe "#user" do
-      it "returns the user" do
-        expect(subject.user).to eq(user)
+    describe "#participatory_space_type" do
+      it "returns the participatory space type" do
+        expect(subject.participatory_space_type).to eq("Processes")
+      end
+    end
+
+    describe "#participatory_space_path" do
+      it "returns the path to user roles" do
+        expect(subject.participatory_space_path).to eq("/admin/participatory_processes/#{participatory_space.slug}/user_roles")
       end
 
-      it "returns email" do
-        expect(subject.user_email).to eq(user.email)
+      context "when role is destroyed" do
+        include_context "with role destroyed"
+
+        it "returns the path to user roles" do
+          expect(subject.participatory_space_path).to eq("/admin/participatory_processes/#{participatory_space.slug}/user_roles")
+        end
       end
 
-      it "returns user name" do
-        expect(subject.user_name).to eq(user.name)
+      # rubocop:disable RSpec/AnyInstance
+      context "when no user roles route exist" do
+        before do
+          allow_any_instance_of(Decidim::EngineRouter).to receive(:participatory_process_user_roles_path).and_raise(NoMethodError)
+        end
+
+        it "returns the path to user roles" do
+          expect(subject.participatory_space_path.split("?").first).to eq("/admin/participatory_processes/#{participatory_space.slug}")
+        end
+
+        context "when no participatory_space route exist" do
+          before do
+            allow_any_instance_of(Decidim::EngineRouter).to receive(:participatory_process_path).and_raise(NoMethodError)
+          end
+
+          it "returns empty" do
+            expect(subject.participatory_space_path).to be_blank
+          end
+        end
       end
+      # rubocop:enable RSpec/AnyInstance
     end
   end
 end
