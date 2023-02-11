@@ -66,6 +66,14 @@ module Decidim
         SQL
         Arel.sql(query)
       end
+
+      ransacker :start, type: :date do
+        Arel.sql("date(created_at)")
+      end
+
+      ransacker :end, type: :date do
+        Arel.sql("date(created_at)")
+      end
     end
   end
 end

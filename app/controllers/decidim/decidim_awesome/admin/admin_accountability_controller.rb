@@ -7,7 +7,7 @@ module Decidim
         include NeedsAwesomeConfig
         include Decidim::DecidimAwesome::AdminAccountability::Admin::Filterable
 
-        helper_method :admin_actions, :admin_action, :admin_actions_ids, :collection
+        helper_method :admin_actions, :admin_action, :collection
 
         layout "decidim/admin/users"
 
@@ -15,7 +15,9 @@ module Decidim
           enforce_permission_to :edit_config, :allow_admin_accountability
         end
 
-        def index; end
+        def index
+          @render_date_fields = true
+        end
 
         def export
           # TODO: export to xls, csv
@@ -33,10 +35,6 @@ module Decidim
 
         def admin_action
           @admin_action ||= collection.find(params[:id])
-        end
-
-        def admin_actions_ids
-          @admin_actions_ids ||= params[:admin_action_ids]
         end
       end
     end
