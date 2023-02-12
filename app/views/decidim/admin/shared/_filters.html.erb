@@ -31,14 +31,14 @@
         <div class="input-group mt-xs">
           <div class="input-group-field">
             <%= form.label t("search_field_start_date", scope: "decidim.admin.filters.search_placeholder") %>
-            <%= form.date_field(:start_gteq,
+            <%= form.date_field(:created_at_gteq,
                                 class: "input-group-field",
                                 label: false,
                                 datepicker: true) %>
           </div>
           <div class="input-group-field">
             <%= form.label t("search_field_end_date", scope: "decidim.admin.filters.search_placeholder") %>
-            <%= form.date_field(:end_lteq,
+            <%= form.date_field(:created_at_lteq,
                                 class: "input-group-field",
                                 label: false,
                                 datepicker: true) %>

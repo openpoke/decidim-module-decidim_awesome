@@ -140,10 +140,9 @@ describe "Filter Admin actions", type: :system do
 
         def search_by_date(start_date, end_date)
           within(".filters__section") do
-            fill_in("q_start_gteq", with: start_date.strftime(DATE_FORMAT)) if start_date.present?
-            fill_in("q_end_lteq", with: end_date.strftime(DATE_FORMAT)) if end_date.present?
+            fill_in("q_created_at_gteq", with: start_date.strftime(DATE_FORMAT)) if start_date.present?
+            fill_in("q_created_at_lteq", with: end_date.strftime(DATE_FORMAT)) if end_date.present?
             find("*[type=submit]").click
-            sleep 10
           end
         end
 
