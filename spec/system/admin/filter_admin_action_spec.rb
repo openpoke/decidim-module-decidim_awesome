@@ -45,8 +45,8 @@ describe "Filter Admin actions", type: :system do
       it "shows filters", versioning: true do
         expect(page).to have_content("Filter")
         expect(page).to have_css("#q_user_name_or_user_email_cont")
-        expect(page).to have_css("#q_start_gteq")
-        expect(page).to have_css("#q_end_lteq")
+        expect(page).to have_css("#q_created_at_gteq")
+        expect(page).to have_css("#q_created_at_lteq")
       end
 
       it "displays the filter labels", versioning: true do
@@ -158,7 +158,7 @@ describe "Filter Admin actions", type: :system do
 
         context "when the start date is later" do
           it "displays no entries", versioning: true do
-            search_by_date(1.hour.ago, "")
+            search_by_date(1.day.from_now, "")
 
             within "tbody" do
               expect(page).to have_css("tr", count: 0)
