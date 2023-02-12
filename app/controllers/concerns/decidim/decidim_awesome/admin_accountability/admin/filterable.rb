@@ -59,7 +59,7 @@ module Decidim
             end
 
             def role_types
-              collection.map { |admin_action| admin_action.item[:role] }.uniq.sort
+              collection.map { |admin_action| admin_action.item&.[](:role) }.compact.uniq.sort
             end
           end
         end
