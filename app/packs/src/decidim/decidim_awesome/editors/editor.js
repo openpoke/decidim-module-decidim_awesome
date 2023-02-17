@@ -37,7 +37,7 @@ export function destroyQuillEditor(container) {
   }
 }
 
-export default function createQuillEditor(container) {
+export function createQuillEditor(container) {
   const toolbar = $(container).data("toolbar");
   const disabled = $(container).data("disabled");
   const allowedEmptyContentSelector = "iframe";
