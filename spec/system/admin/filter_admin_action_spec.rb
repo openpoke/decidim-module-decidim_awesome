@@ -28,15 +28,18 @@ describe "Filter Admin actions", type: :system do
 
   describe "admin action list" do
     context "when there are admin actions" do
+      let!(:participatory_process_user_role1) { create(:participatory_process_user_role, user: administrator, role: "admin", created_at: 4.days.ago) }
+      let!(:participatory_process_user_role2) { create(:participatory_process_user_role, user: valuator, role: "valuator", created_at: 3.days.ago) }
+      let!(:participatory_process_user_role3) { create(:participatory_process_user_role, user: collaborator, role: "collaborator", created_at: 2.days.ago) }
+      let!(:participatory_process_user_role4) { create(:participatory_process_user_role, user: moderator, role: "moderator", created_at: 1.day.ago) }
+      let!(:assembly_user_role1) { create(:assembly_user_role, user: administrator, role: "admin", created_at: 4.days.ago) }
+      let!(:assembly_user_role2) { create(:assembly_user_role, user: valuator, role: "valuator", created_at: 3.days.ago) }
+      let!(:assembly_user_role3) { create(:assembly_user_role, user: collaborator, role: "collaborator", created_at: 2.days.ago) }
+      let!(:assembly_user_role4) { create(:assembly_user_role, user: moderator, role: "moderator", created_at: 1.day.ago) }
+
       before do
-        create(:participatory_process_user_role, user: administrator, role: "admin", created_at: 4.days.ago)
-        create(:participatory_process_user_role, user: valuator, role: "valuator", created_at: 3.days.ago)
-        create(:participatory_process_user_role, user: collaborator, role: "collaborator", created_at: 2.days.ago)
-        create(:participatory_process_user_role, user: moderator, role: "moderator", created_at: 1.day.ago)
-        create(:assembly_user_role, user: administrator, role: "admin", created_at: 4.days.ago)
-        create(:assembly_user_role, user: valuator, role: "valuator", created_at: 3.days.ago)
-        create(:assembly_user_role, user: collaborator, role: "collaborator", created_at: 2.days.ago)
-        create(:assembly_user_role, user: moderator, role: "moderator", created_at: 1.day.ago)
+        # ensure papertrail has the same created_at date as the object being mocked
+        Decidim::DecidimAwesome::PaperTrailVersion.role_actions.map { |v| v.update(created_at: v.item.created_at) }
 
         click_link "Participants"
         click_link "Admin accountability"
@@ -136,12 +139,11 @@ describe "Filter Admin actions", type: :system do
       end
 
       context "when searching by date" do
-        DATE_FORMAT = "%d/%m/%Y"
-
         def search_by_date(start_date, end_date)
           within(".filters__section") do
-            fill_in("q_created_at_gteq", with: start_date.strftime(DATE_FORMAT)) if start_date.present?
-            fill_in("q_created_at_lteq", with: end_date.strftime(DATE_FORMAT)) if end_date.present?
+            fill_in(:q_created_at_gteq, with: start_date) if start_date.present?
+            fill_in(:q_created_at_lteq, with: end_date) if end_date.present?
+
             find("*[type=submit]").click
           end
         end
@@ -187,11 +189,19 @@ describe "Filter Admin actions", type: :system do
         end
 
         context "when searching in range" do
-          it "displays entries in range" do
+          it "displays entries in range", versioning: true do
             search_by_date(3.days.ago, 2.days.ago)
 
             within "tbody" do
-              expect(page).to have_css("tr", count: 2)
+              expect(page).to have_css("tr", count: 4)
+              expect(page).to have_content("Collaborator", count: 2)
+              expect(page).to have_content("Valuator", count: 2)
+              expect(page).to have_content(collaborator.name, count: 2)
+              expect(page).to have_content(valuator.name, count: 2)
+              expect(page).to have_content(participatory_process_user_role2.participatory_space.title["en"])
+              expect(page).to have_content(participatory_process_user_role3.participatory_space.title["en"])
+              expect(page).to have_content(assembly_user_role2.participatory_space.title["en"])
+              expect(page).to have_content(assembly_user_role3.participatory_space.title["en"])
             end
           end
         end
