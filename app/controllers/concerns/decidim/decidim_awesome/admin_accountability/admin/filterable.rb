@@ -53,7 +53,7 @@ module Decidim
             end
 
             def participatory_space_types
-              collection.pluck(:item_type).uniq.sort
+              @participatory_space_types ||= collection.pluck(:item_type).uniq.sort
             end
 
             def role_types
