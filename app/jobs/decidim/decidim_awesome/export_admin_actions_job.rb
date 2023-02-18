@@ -6,25 +6,22 @@ module Decidim
       queue_as :default
 
       def perform(current_user, format, collection_ids)
-        collection = collection_to_export(collection_ids)
+        collection = serialized_collection(collection_ids)
 
-        serialized_collection = collection.map do |item|
-          Decidim::DecidimAwesome::PaperTrailVersionSerializer.new(item).serialize
-        end
-
-        export_data = Decidim::Exporters.find_exporter(format).new(serialized_collection).export
+        export_data = Exporters.find_exporter(format).new(collection).export
 
         ExportMailer.export(current_user, "admin_actions", export_data).deliver_now
       end
 
       private
 
-      def collection_to_export(ids)
-        collection = Decidim::DecidimAwesome::PaperTrailVersion.role_actions
-
-        collection = collection.where(id: ids) if ids.present?
-
-        collection.order(id: :desc)
+      def serialized_collection(collection_ids)
+        @serialized_collection ||= begin
+          collection = PaperTrailVersion.role_actions.where(id: collection_ids)
+          collection.map do |item|
+            PaperTrailVersionSerializer.new(item).serialize
+          end
+        end
       end
     end
   end

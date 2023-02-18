@@ -17,7 +17,7 @@ module Decidim
       # Public: Exports a hash with the serialized data for this admin action.
       def serialize
         {
-          role: entry.role,
+          role: entry.role_name,
           user_name: entry.user_name,
           user_email: entry.user_email,
           user_role_type: entry.entry.item_type,
