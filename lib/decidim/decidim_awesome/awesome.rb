@@ -232,7 +232,7 @@ module Decidim
       [
         "Decidim::AssemblyUserRole",
         "Decidim::ParticipatoryProcessUserRole",
-        "Decidim::ConferencesUserRole"
+        "Decidim::ConferenceUserRole"
       ]
     end
 
