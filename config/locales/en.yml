@@ -67,6 +67,8 @@ en:
             label: Role
           role_type_eq:
             label: Role type
+          admin_role_type:
+            label: Role type
         label:
           search_field_end_date: 'To date:'
           search_field_start_date: 'From date:'

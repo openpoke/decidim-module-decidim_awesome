@@ -6,20 +6,32 @@ module Decidim
       default_scope { order("created_at DESC") }
 
       def self.safe_user_roles
-        DecidimAwesome.admin_user_roles.filter(&:safe_constantize)
+        DecidimAwesome.participatory_space_roles.filter(&:safe_constantize)
       end
 
-      scope :role_actions, -> { where(item_type: PaperTrailVersion.safe_user_roles, event: "create") }
-      scope :admin_role_actions, lambda {
-        where(item_type: "Decidim::UserBaseEntity", event: %w(create update))
-          .where("object_changes LIKE '%\nroles:\n%' OR object_changes LIKE '%\nadmin:\n- false\n%'")
-      }
+      def self.ransackable_scopes(_auth_object = nil)
+        [:admin_role_type_eq]
+      end
+
+      scope :space_role_actions, -> { where(item_type: PaperTrailVersion.safe_user_roles, event: "create") }
+
+      def self.admin_role_actions(filter = nil)
+        base = where(item_type: "Decidim::UserBaseEntity", event: %w(create update))
+        case filter
+        when nil
+          base.where("object_changes LIKE '%\nroles:\n%' OR object_changes LIKE '%\nadmin:\n- false\n%'")
+        when "admin"
+          base.where("object_changes LIKE '%\nadmin:\n- false\n%'")
+        else
+          base.where(Arel.sql("object_changes LIKE '%\nroles:\n%\n- - #{filter}\n%'"))
+        end
+      end
 
       def present(html: true)
         @present ||= if item_type == "Decidim::UserBaseEntity"
                        UserEntityPresenter.new(self, html: html)
                      elsif item_type.in?(PaperTrailVersion.safe_user_roles)
-                       PaperTrailRolePresenter.new(self, html: html)
+                       ParticipatorySpaceRolePresenter.new(self, html: html)
                      else
                        self
                      end
@@ -54,6 +66,11 @@ module Decidim
               AND item_type = '#{role_class}'
             )
           end
+          queries << %(
+            SELECT decidim_users.email FROM decidim_users
+            WHERE decidim_users.id = versions.item_id
+            AND item_type = 'Decidim::UserBaseEntity'
+          )
           Arel.sql("(#{queries.join(" UNION ")})")
         end
       end
@@ -69,6 +86,11 @@ module Decidim
               AND item_type = '#{role_class}'
             )
           end
+          queries << %(
+            SELECT decidim_users.name FROM decidim_users
+            WHERE decidim_users.id = versions.item_id
+            AND item_type = 'Decidim::UserBaseEntity'
+          )
           Arel.sql("(#{queries.join(" UNION ")})")
         end
       end
