@@ -12,7 +12,7 @@ module Decidim
         layout "decidim/admin/users"
 
         before_action do
-          enforce_permission_to :edit_config, :admin_accountability
+          enforce_permission_to :edit_config, :admin_accountability, global: global?
         end
 
         def index; end
