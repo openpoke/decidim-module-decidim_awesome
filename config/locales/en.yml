@@ -61,13 +61,13 @@ en:
     admin:
       filters:
         admin_accountability:
+          admin_role_type:
+            label: Role type
           participatory_space_type_eq:
             label: Participatory space type
           role:
             label: Role
           role_type_eq:
-            label: Role type
-          admin_role_type:
             label: Role type
         label:
           search_field_end_date: 'To date:'
@@ -121,6 +121,9 @@ en:
     decidim_awesome:
       admin:
         admin_accountability:
+          admin_roles:
+            admin: Super admin
+            user_manager: User manager
           created_at: Role created at
           currently_active: Currently active
           deleted_user: Deleted user
@@ -135,12 +138,14 @@ en:
             notice: Export job has been enqueued. You will receive an email when it's
               ready.
           index:
-            see_global: List global admins
-            see_spaces: List participatory space admins
             description: Listed here you'll find all users that have had some role
               in the administration of a participatory space. Normal admins are not
               listed.
-            global_description: Listed here you'll find all users that have had some global role in administrating this organization. Participatory space admins are not listed.
+            global_description: Listed here you'll find all users that have had some
+              global role in administrating this organization. Participatory space
+              admins are not listed.
+            see_global: List global admins
+            see_spaces: List participatory space admins
             title: Admin accountability
           last_login: Last sign in date
           missing_info: "(missing information)"
@@ -155,9 +160,6 @@ en:
             collaborator: Collaborator
             moderator: Moderator
             valuator: Valuator
-          admin_roles:
-            admin: Super admin
-            user_manager: User manager
         checks:
           index:
             admin_head_tags: Awesome tags included in the admin application header
