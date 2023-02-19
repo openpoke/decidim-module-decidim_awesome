@@ -160,7 +160,7 @@ This feature allows you to list all the users that are, or have been at any poin
 
 Results can be filtered by role and by time range and also exported as CSV or other formats.
 
-![Admin accountability](examples/admin_accoutability.png)
+![Admin accountability](examples/admin_accountability.png)
 
 #### To be continued...
 
