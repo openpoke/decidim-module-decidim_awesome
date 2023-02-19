@@ -157,7 +157,7 @@ en:
             valuator: Valuator
           admin_roles:
             admin: Super admin
-            user_manager: User Manager
+            user_manager: User manager
         checks:
           index:
             admin_head_tags: Awesome tags included in the admin application header

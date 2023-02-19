@@ -9,10 +9,6 @@ module Decidim
         DecidimAwesome.participatory_space_roles.filter(&:safe_constantize)
       end
 
-      def self.ransackable_scopes(_auth_object = nil)
-        [:admin_role_type_eq]
-      end
-
       scope :space_role_actions, -> { where(item_type: PaperTrailVersion.safe_user_roles, event: "create") }
 
       def self.admin_role_actions(filter = nil)

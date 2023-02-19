@@ -86,14 +86,14 @@ module Decidim::DecidimAwesome
         end
 
         it "returns the role name in html" do
-          expect(subject.role_name).to eq("<span class=\"text-secondary\">User Manager</span>")
+          expect(subject.role_name).to eq("<span class=\"text-secondary\">User manager</span>")
         end
 
         context "when html is disabled" do
           let(:html) { false }
 
           it "returns without classes" do
-            expect(subject.role_name).to eq("User Manager")
+            expect(subject.role_name).to eq("User manager")
           end
         end
       end
