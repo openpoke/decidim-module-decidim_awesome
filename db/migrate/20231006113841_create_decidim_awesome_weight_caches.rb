@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-class CreateDecidimAwesomeWeigthCaches < ActiveRecord::Migration[6.0]
+class CreateDecidimAwesomeWeightCaches < ActiveRecord::Migration[6.0]
   def change
     create_table :decidim_awesome_weight_caches do |t|
       # this might be polymorphic in the future (if other types of votes are supported)
