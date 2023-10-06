@@ -6,7 +6,7 @@ class CreateDecidimAwesomeVoteWeights < ActiveRecord::Migration[6.0]
       # this might be polymorphic in the future (if other types of votes are supported)
       t.references :proposal_vote, null: false, index: { name: "decidim_awesome_proposals_weights_vote" }
 
-      t.jsonb :totals
+      t.integer :weight, null: false, default: 1
       t.timestamps
     end
   end
