@@ -23,7 +23,7 @@ module Decidim::DecidimAwesome
       let!(:vote_weight) { create(:awesome_vote_weight, vote: vote) }
 
       it "destroys the vote weight" do
-        expect { vote.destroy }.to change { Decidim::DecidimAwesome::VoteWeight.count }.by(-1)
+        expect { vote.destroy }.to change(Decidim::DecidimAwesome::VoteWeight, :count).by(-1)
       end
     end
 
@@ -32,7 +32,7 @@ module Decidim::DecidimAwesome
       let!(:vote_weight) { create(:awesome_vote_weight, vote: vote) }
 
       it "does not destroy the vote" do
-        expect { vote_weight.destroy }.not_to change { Decidim::Proposals::ProposalVote.count }
+        expect { vote_weight.destroy }.not_to change(Decidim::Proposals::ProposalVote, :count)
       end
     end
   end

@@ -52,9 +52,9 @@ FactoryBot.define do
 
     trait :with_votes do
       after :create do |weight|
-        5.times.collect do
+        5.times.collect do |n|
           vote = create(:proposal_vote, proposal: weight.proposal, author: create(:user, organization: weight.proposal.organization))
-          create(:awesome_vote_weight, vote: vote)
+          create(:awesome_vote_weight, vote: vote, weight: n + 1)
         end
       end
     end

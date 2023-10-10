@@ -7,6 +7,7 @@ class CreateDecidimAwesomeWeightCaches < ActiveRecord::Migration[6.0]
       t.references :decidim_proposal, null: false, index: { name: "decidim_awesome_proposals_weights_cache" }
 
       t.jsonb :totals
+      t.integer :weight_total, default: 0
       t.timestamps
     end
   end

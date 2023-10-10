@@ -23,7 +23,7 @@ module Decidim::DecidimAwesome
       let!(:weight_cache) { create(:awesome_weight_cache, proposal: proposal) }
 
       it "destroys the proposal weight" do
-        expect { proposal.destroy }.to change { Decidim::DecidimAwesome::WeightCache.count }.by(-1)
+        expect { proposal.destroy }.to change(Decidim::DecidimAwesome::WeightCache, :count).by(-1)
       end
     end
 
@@ -31,7 +31,7 @@ module Decidim::DecidimAwesome
       let!(:weight_cache) { create(:awesome_weight_cache, proposal: proposal) }
 
       it "does not destroy the proposal" do
-        expect { weight_cache.destroy }.not_to change { Decidim::Proposals::ProposalVote.count }
+        expect { weight_cache.destroy }.not_to change(Decidim::Proposals::ProposalVote, :count)
       end
     end
 
@@ -39,8 +39,9 @@ module Decidim::DecidimAwesome
       describe "created" do
         it "increments the weight cache" do
           expect { create(:proposal_vote, proposal: proposal) }.to change { proposal.votes.count }.by(1)
-          expect { create(:awesome_vote_weight, vote: proposal.votes.first, weight: 3) }.to change { Decidim::DecidimAwesome::WeightCache.count }.by(1)
+          expect { create(:awesome_vote_weight, vote: proposal.votes.first, weight: 3) }.to change(Decidim::DecidimAwesome::WeightCache, :count).by(1)
           expect(proposal.weight_cache.totals).to eq({ "3" => 1 })
+          expect(proposal.weight_cache.weight_total).to eq(3)
         end
 
         context "when cache already exists" do
@@ -50,6 +51,7 @@ module Decidim::DecidimAwesome
 
           it "has weights and votes" do
             expect(weight_cache.reload.totals).to eq({ "1" => 1, "2" => 1, "3" => 1, "4" => 1, "5" => 1 })
+            expect(weight_cache.weight_total).to eq(15)
           end
 
           it "increments the weight cache" do
@@ -57,20 +59,57 @@ module Decidim::DecidimAwesome
             create(:awesome_vote_weight, vote: create(:proposal_vote, proposal: proposal), weight: 3)
             create(:awesome_vote_weight, vote: create(:proposal_vote, proposal: proposal), weight: 3)
             expect(weight_cache.reload.totals).to eq({ "1" => 2, "2" => 1, "3" => 3, "4" => 1, "5" => 1 })
+            expect(weight_cache.weight_total).to eq(22)
+          end
+        end
+
+        context "when cache does not exist yet" do
+          let(:weight_cache) { proposal.reload.weight_cache }
+
+          it "has no weights and votes" do
+            expect(weight_cache).to be_nil
+          end
+
+          it "increments the weight cache" do
+            create(:awesome_vote_weight, vote: create(:proposal_vote, proposal: proposal), weight: 1)
+            create(:awesome_vote_weight, vote: create(:proposal_vote, proposal: proposal), weight: 3)
+            create(:awesome_vote_weight, vote: create(:proposal_vote, proposal: proposal), weight: 3)
+            expect(weight_cache.totals).to eq({ "1" => 1, "3" => 2 })
+            expect(weight_cache.weight_total).to eq(7)
           end
         end
       end
 
+      # this is un unlikely scenario as voting removes and creates new vote weights, just in case...
       describe "updated" do
+        let!(:vote_weight1) { create(:awesome_vote_weight, vote: create(:proposal_vote, proposal: proposal), weight: 1) }
+        let!(:vote_weight2) { create(:awesome_vote_weight, vote: create(:proposal_vote, proposal: proposal), weight: 2) }
+        let(:weight_cache) { proposal.reload.weight_cache }
+
         it "increments the weight cache" do
+          vote_weight1.weight = 3
+          vote_weight1.save
+          expect(weight_cache.totals).to eq({ "2" => 1, "3" => 1 })
+          expect(weight_cache.weight_total).to eq(5)
         end
 
         it "decreases the weight cache" do
+          vote_weight2.weight = 1
+          vote_weight2.save
+          expect(weight_cache.totals).to eq({ "1" => 2 })
+          expect(weight_cache.weight_total).to eq(2)
         end
       end
 
       describe "destroyed" do
+        let!(:vote_weight1) { create(:awesome_vote_weight, vote: create(:proposal_vote, proposal: proposal), weight: 1) }
+        let!(:vote_weight2) { create(:awesome_vote_weight, vote: create(:proposal_vote, proposal: proposal), weight: 2) }
+        let(:weight_cache) { proposal.reload.weight_cache }
+
         it "decreases the weight cache" do
+          vote_weight1.destroy
+          expect(weight_cache.totals).to eq({ "2" => 1 })
+          expect(weight_cache.weight_total).to eq(2)
         end
       end
     end
