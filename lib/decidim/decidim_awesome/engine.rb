@@ -50,10 +50,13 @@ module Decidim
 
         # override user's admin property
         Decidim::User.include(Decidim::DecidimAwesome::UserOverride) if DecidimAwesome.enabled?(:scoped_admins)
-        # add vote weight to proposal vote
-        Decidim::Proposals::ProposalVote.include(Decidim::DecidimAwesome::HasVoteWeight) # if DecidimAwesome.enabled?(:proposal_vote_weight)
-        # add vote weight cache to proposal
-        Decidim::Proposals::Proposal.include(Decidim::DecidimAwesome::HasWeightCache) # if DecidimAwesome.enabled?(:proposal_vote_weight)
+
+        if DecidimAwesome.enabled?(:weighted_proposal_voting)
+          # add vote weight to proposal vote
+          Decidim::Proposals::ProposalVote.include(Decidim::DecidimAwesome::HasVoteWeight)
+          # add vote weight cache to proposal
+          Decidim::Proposals::Proposal.include(Decidim::DecidimAwesome::HasWeightCache)
+        end
 
         Decidim::MenuPresenter.include(Decidim::DecidimAwesome::MenuPresenterOverride)
         Decidim::MenuItemPresenter.include(Decidim::DecidimAwesome::MenuItemPresenterOverride)
@@ -80,8 +83,15 @@ module Decidim
         end
       end
 
-      initializer "decidim.middleware" do |app|
+      initializer "decidim_decidim_awesome.middleware" do |app|
         app.config.middleware.insert_after Decidim::Middleware::CurrentOrganization, Decidim::DecidimAwesome::CurrentConfig
+      end
+
+      initializer "decidim_decidim_awesome.weighted_proposal_voting" do |_app|
+        if DecidimAwesome.enabled?(:weighted_proposal_voting)
+          # register available processors
+          Decidim::DecidimAwesome.voting_registry.register(:semaphore, Decidim::DecidimAwesome::Voting::Semaphore)
+        end
       end
 
       initializer "decidim_decidim_awesome.webpacker.assets_path" do
