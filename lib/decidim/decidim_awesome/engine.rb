@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
 require "rails"
+require "deface"
 require "decidim/core"
 require "decidim/decidim_awesome/awesome_helpers"
 
@@ -90,7 +91,7 @@ module Decidim
       initializer "decidim_decidim_awesome.weighted_proposal_voting" do |_app|
         if DecidimAwesome.enabled?(:weighted_proposal_voting)
           # register available processors
-          Decidim::DecidimAwesome.voting_registry.register(:semaphore, Decidim::DecidimAwesome::Voting::Semaphore)
+          Decidim::DecidimAwesome.voting_registry.register(:proposals, Decidim::DecidimAwesome::Voting::ThreeFlags)
         end
       end
 

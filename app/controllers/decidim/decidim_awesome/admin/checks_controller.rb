@@ -11,7 +11,7 @@ module Decidim
         helper ConfigConstraintsHelpers
         helper SystemCheckerHelpers
 
-        layout "decidim/admin/decidim_awesome"
+        layout "decidim/decidim_awesome/admin/application"
 
         helper_method :head, :admin_head, :head_addons, :admin_addons, :legacy_version?
 

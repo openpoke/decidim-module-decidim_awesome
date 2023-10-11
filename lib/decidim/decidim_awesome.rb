@@ -12,6 +12,7 @@ require "decidim/decidim_awesome/iframe_component/engine"
 require "decidim/decidim_awesome/iframe_component/admin_engine"
 require "decidim/decidim_awesome/iframe_component/component"
 require "decidim/decidim_awesome/content_parsers/editor_images_parser"
+require "decidim/decidim_awesome/voting"
 
 # Engines to handle logic unrelated to participatory spaces or components
 
