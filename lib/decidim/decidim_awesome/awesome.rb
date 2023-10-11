@@ -9,7 +9,7 @@ module Decidim
     autoload :ContextAnalyzers, "decidim/decidim_awesome/context_analyzers"
     autoload :MenuHacker, "decidim/decidim_awesome/menu_hacker"
     autoload :CustomFields, "decidim/decidim_awesome/custom_fields"
-    autoload :WeightedVotingRegistry, "decidim/decidim_awesome/weighted_voting_registry"
+    autoload :VotingManifest, "decidim/decidim_awesome/voting_manifest"
 
     # Awesome coms with some components for participatory spaces
     # Currently :awesome_map and :awesome_iframe, list them here
@@ -248,7 +248,7 @@ module Decidim
 
     # Public: Stores an instance of ContentBlockRegistry
     def self.voting_registry
-      @voting_registry ||= WeightedVotingRegistry.new
+      @voting_registry ||= Decidim::ManifestRegistry.new("decidim_awesome/voting")
     end
 
     #
@@ -270,7 +270,7 @@ module Decidim
       @registered_components ||= []
     end
 
-    # Wrapp component registering to register component later, after initializer
+    # Wrap registered components to register it later, after initializing
     # so we can honor disabled_components config
     def self.register_component(manifest, &block)
       registered_components << [manifest, block]

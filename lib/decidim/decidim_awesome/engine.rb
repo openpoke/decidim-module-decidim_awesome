@@ -91,7 +91,10 @@ module Decidim
       initializer "decidim_decidim_awesome.weighted_proposal_voting" do |_app|
         if DecidimAwesome.enabled?(:weighted_proposal_voting)
           # register available processors
-          Decidim::DecidimAwesome.voting_registry.register(:proposals, Decidim::DecidimAwesome::Voting::ThreeFlags)
+          Decidim::DecidimAwesome.voting_registry.register(:three_flags) do |voting|
+            voting.show_vote_button_view = "decidim/decidim_awesome/voting/three_flags/show_vote_button"
+            # voting. "Decidim::DecidimAwesome::Voting::ThreeFlags"
+          end
         end
       end
 
