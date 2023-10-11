@@ -27,6 +27,8 @@ module Decidim
         end
         # Include additional helpers globally
         ActionView::Base.include(Decidim::DecidimAwesome::AwesomeHelpers)
+        # Also for cells
+        Decidim::ViewModel.include(Decidim::DecidimAwesome::AwesomeHelpers)
 
         # Override EtiquetteValidator
         EtiquetteValidator.include(Decidim::DecidimAwesome::EtiquetteValidatorOverride) if DecidimAwesome.enabled?([:validate_title_max_caps_percent,
@@ -93,6 +95,9 @@ module Decidim
           # register available processors
           Decidim::DecidimAwesome.voting_registry.register(:three_flags) do |voting|
             voting.show_vote_button_view = "decidim/decidim_awesome/voting/three_flags/show_vote_button"
+            # voting.show_votes_count_view = "decidim/decidim_awesome/voting/three_flags/show_votes_count"
+            voting.show_votes_count_view = ""
+            voting.proposal_m_cell_footer = "decidim/decidim_awesome/voting/three_flags/proposal_m_cell_footer"
             # voting. "Decidim::DecidimAwesome::Voting::ThreeFlags"
           end
         end
@@ -102,7 +107,8 @@ module Decidim
         Decidim.register_assets_path File.expand_path("app/packs", root)
       end
 
-      initializer "decidim_decidim_awesome.add_cells_view_paths" do
+      # Votings may override proposals cells, let's be sure to add these paths after the proposal component initializer
+      initializer "decidim_decidim_awesome.add_cells_view_paths", before: "decidim_proposals.add_cells_view_paths" do
         Cell::ViewModel.view_paths << File.expand_path("#{Decidim::DecidimAwesome::Engine.root}/app/cells")
         Cell::ViewModel.view_paths << File.expand_path("#{Decidim::DecidimAwesome::Engine.root}/app/views")
       end
