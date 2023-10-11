@@ -83,6 +83,10 @@ module Decidim
             Decidim::Proposals::ApplicationHelper.include(Decidim::DecidimAwesome::Proposals::ApplicationHelperOverride)
             Decidim::AmendmentsHelper.include(Decidim::DecidimAwesome::AmendmentsHelperOverride)
           end
+
+          if DecidimAwesome.enabled?(:weighted_proposal_voting)
+            Decidim::Proposals::ProposalVotesController.include(Decidim::DecidimAwesome::Proposals::ProposalVotesControllerOverride)
+          end
         end
       end
 
@@ -97,8 +101,11 @@ module Decidim
             voting.show_vote_button_view = "decidim/decidim_awesome/voting/three_flags/show_vote_button"
             # voting.show_votes_count_view = "decidim/decidim_awesome/voting/three_flags/show_votes_count"
             voting.show_votes_count_view = ""
-            voting.proposal_m_cell_footer = "decidim/decidim_awesome/voting/three_flags/proposal_m_cell_footer"
+            # voting.proposal_m_cell_footer = "decidim/decidim_awesome/voting/three_flags/proposal_m_cell_footer"
             # voting. "Decidim::DecidimAwesome::Voting::ThreeFlags"
+            voting.weight_validator do |weight, _context|
+              weight.in? [1, 2, 3]
+            end
           end
         end
       end
