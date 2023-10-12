@@ -11,7 +11,7 @@
   red
 <% end %>
 
-<%= action_authorized_link_to :vote, proposal_proposal_vote_path(proposal_id: proposal, from_proposals_list: from_proposals_list, weight: 3), resource: proposal, remote: true, method: :delete, data: { disable: true, "redirect-url": proposal_path(proposal) } do %>
+<%= action_authorized_link_to :vote, proposal_proposal_vote_path(proposal_id: proposal, from_proposals_list: from_proposals_list), resource: proposal, remote: true, method: :delete, data: { disable: true, "redirect-url": proposal_path(proposal) } do %>
   destroy vote
 <% end %>
 </p>
