@@ -51,18 +51,9 @@ describe "Show awesome map", type: :system do
       # static: { url: "https://image.maps.ls.hereapi.com/mia/1.6/mapview" }
       dynamic: {
         tile_layer: {
-          url: "https://tile.openstreetmap.org/{z}/{x}/{y}.png?key={apiKey}&{foo}",
-          api_key: true,
-          foo: "bar=baz",
-          attribution: %(
-            <a href="https://www.openstreetmap.org/copyright" target="_blank">&copy; OpenStreetMap</a> contributors
-          ).strip
-          # Translatable attribution:
-          # attribution: -> { I18n.t("tile_layer_attribution") }
+          url: "http://tile.openstreetmap.org/{z}/{x}/{y}.png"
         }
-      },
-      # static: { url: "https://staticmap.openstreetmap.de/staticmap.php" },
-      geocoding: { host: "nominatim.openstreetmap.org", use_https: true }
+      }
     }
   end
 
