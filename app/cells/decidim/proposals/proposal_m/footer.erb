@@ -6,7 +6,7 @@
 <% original = normalize_options(:footer) %>
 <% original[:prefixes] = original[:prefixes].filter {|path| path != Decidim::DecidimAwesome::Engine.root.join("app/cells/decidim/proposals/proposal_m").to_s } %>
 
-<% if view = awesome_voting_for_component?(component_settings)&.proposal_m_cell_footer %>
+<% if view = awesome_voting_manifest_for(current_component)&.proposal_m_cell_footer %>
   <%= render partial: view if view.present? %>
 <% else %>
   <%= render original %>

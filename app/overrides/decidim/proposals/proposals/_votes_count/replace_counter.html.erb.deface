@@ -1,5 +1,5 @@
 <!-- replace "erb[silent]:contains('if !current_settings.votes_hidden?')" -->
 
-<% if view = awesome_voting_for_component?(component_settings)&.show_votes_count_view %>
+<% if view = awesome_voting_manifest_for(current_component)&.show_votes_count_view %>
   <%= render view, local_assigns if view.present? %>
 <% elsif !current_settings.votes_hidden? && current_component.participatory_space.can_participate?(current_user) %>

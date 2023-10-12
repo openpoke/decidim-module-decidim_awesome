@@ -33,7 +33,7 @@ module Decidim
           end
 
           def vote_manifest
-            @vote_manifest ||= awesome_voting_for_component?(component_settings)
+            @vote_manifest ||= awesome_voting_manifest_for(current_component)
           end
 
           def weight
