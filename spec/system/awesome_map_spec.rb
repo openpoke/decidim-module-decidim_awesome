@@ -51,7 +51,7 @@ describe "Show awesome map", type: :system do
       # static: { url: "https://image.maps.ls.hereapi.com/mia/1.6/mapview" }
       dynamic: {
         tile_layer: {
-          url: "http://tile.openstreetmap.org/{z}/{x}/{y}.png"
+          url: "http://#{organization.host}:#{Capybara.current_session.server.port}/tile-0.png"
         }
       }
     }
@@ -99,7 +99,7 @@ describe "Show awesome map", type: :system do
 
   context "when step settings are all true" do
     it "shows all proposals markers" do
-      sleep(5)
+      sleep(1)
       expect(page.body).to have_selector("div[title='#{accepted_proposal.title["en"]}']")
       expect(page.body).to have_selector("div[title='#{evaluating_proposal.title["en"]}']")
       expect(page.body).to have_selector("div[title='#{rejected_proposal.title["en"]}']")
