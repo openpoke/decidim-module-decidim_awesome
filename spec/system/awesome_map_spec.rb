@@ -10,12 +10,12 @@ describe "Show awesome map", type: :system do
   let!(:proposal) { create(:proposal, component: proposal_component, latitude: 40, longitude: 2) }
   let(:emendation) { build(:proposal, component: proposal_component, latitude: 42, longitude: 4) }
   let!(:proposal_amendment) { create(:proposal_amendment, amendable: proposal, emendation: emendation) }
-  let!(:accepted_proposal) { create(:proposal, :accepted, component: proposal_component, latitude: 40, longitude: -50) }
-  let!(:evaluating_proposal) { create(:proposal, :evaluating, component: proposal_component, latitude: 30, longitude: 45) }
-  let!(:not_answered_proposal) { create(:proposal, :not_answered, component: proposal_component, latitude: 70, longitude: 6) }
-  let!(:null_state_proposal) { create(:proposal, state: nil, component: proposal_component, latitude: 50, longitude: 10) }
-  let!(:withdrawn_proposal) { create(:proposal, :withdrawn, component: proposal_component, latitude: 60, longitude: -30) }
-  let!(:rejected_proposal) { create(:proposal, :rejected, component: proposal_component, latitude: 10, longitude: 80) }
+  let!(:accepted_proposal) { create(:proposal, :accepted, title: {en: "Accepted proposal"}, component: proposal_component, latitude: 40, longitude: -50) }
+  let!(:evaluating_proposal) { create(:proposal, :evaluating, title: {en: "Evaluating proposal"}, component: proposal_component, latitude: 30, longitude: 45) }
+  let!(:not_answered_proposal) { create(:proposal, :not_answered, title: {en: "Not answered proposal"}, component: proposal_component, latitude: 70, longitude: 6) }
+  let!(:null_state_proposal) { create(:proposal, state: nil, title: {en: "Null state proposal"}, component: proposal_component, latitude: 50, longitude: 10) }
+  let!(:withdrawn_proposal) { create(:proposal, :withdrawn, title: {en: "Withdrawn proposal"}, component: proposal_component, latitude: 60, longitude: -30) }
+  let!(:rejected_proposal) { create(:proposal, :rejected, title: {en: "Rejected proposal"}, component: proposal_component, latitude: 10, longitude: 80) }
   let!(:category) { create(:category, participatory_space: participatory_process) }
   let!(:subcategory) { create(:subcategory, parent: category, participatory_space: participatory_process) }
   let!(:user) { create :user, :confirmed, organization: organization }
@@ -46,9 +46,23 @@ describe "Show awesome map", type: :system do
   let(:show_meetings) { true }
   let(:map_config) do
     {
-      provider: :here,
-      api_key: "foo",
-      static: { url: "https://image.maps.ls.hereapi.com/mia/1.6/mapview" }
+      provider: :osm,
+      # api_key: "foo",
+      # static: { url: "https://image.maps.ls.hereapi.com/mia/1.6/mapview" }
+      dynamic: {
+        tile_layer: {
+          url: "https://tile.openstreetmap.org/{z}/{x}/{y}.png?key={apiKey}&{foo}",
+          api_key: true,
+          foo: "bar=baz",
+          attribution: %(
+            <a href="https://www.openstreetmap.org/copyright" target="_blank">&copy; OpenStreetMap</a> contributors
+          ).strip
+          # Translatable attribution:
+          # attribution: -> { I18n.t("tile_layer_attribution") }
+        }
+      },
+      # static: { url: "https://staticmap.openstreetmap.de/staticmap.php" },
+      geocoding: { host: "nominatim.openstreetmap.org", use_https: true }
     }
   end
 

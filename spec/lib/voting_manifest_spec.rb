@@ -8,7 +8,7 @@ module Decidim::DecidimAwesome
 
     before do
       subject.weight_validator do |weight, context|
-        next if context[:already_voted_this_weight]
+        next if context && context[:already_voted_this_weight]
 
         weight.in? [1, 2, 3, 4, 5]
       end
