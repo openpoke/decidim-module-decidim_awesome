@@ -99,10 +99,9 @@ module Decidim
           # register available processors
           Decidim::DecidimAwesome.voting_registry.register(:three_flags) do |voting|
             voting.show_vote_button_view = "decidim/decidim_awesome/voting/three_flags/show_vote_button"
-            # voting.show_votes_count_view = "decidim/decidim_awesome/voting/three_flags/show_votes_count"
-            voting.show_votes_count_view = ""
-            # voting.proposal_m_cell_footer = "decidim/decidim_awesome/voting/three_flags/proposal_m_cell_footer"
-            # voting. "Decidim::DecidimAwesome::Voting::ThreeFlags"
+            voting.show_votes_count_view = "decidim/decidim_awesome/voting/three_flags/show_votes_count"
+            # voting.show_votes_count_view = "" # hide votes count if needed
+            voting.proposal_m_cell_footer = "decidim/decidim_awesome/voting/three_flags/proposal_m_cell_footer"
             voting.weight_validator do |weight, _context|
               weight.in? [1, 2, 3]
             end

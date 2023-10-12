@@ -10,10 +10,8 @@ module Decidim
 
         def weight=(weight)
           vote_weight ||= build_vote_weight
-          if vote_weight.weight != weight
-            vote_weight.weight = weight
-            vote_weight.save
-          end
+          vote_weight.weight = weight
+          vote_weight.save
         end
 
         def weight

@@ -8,8 +8,34 @@ module Decidim
         include Decidim::DecidimAwesome::AwesomeHelpers
 
         included do
-          before_action :validate_weight, only: [:create]
-          after_action :update_weight, only: [:create]
+          # rubocop:disable Rails/LexicallyScopedActionFilter
+          before_action :validate_weight, only: :create
+          # rubocop:enable Rails/LexicallyScopedActionFilter
+
+          def create
+            enforce_permission_to :vote, :proposal, proposal: proposal
+            @from_proposals_list = params[:from_proposals_list] == "true"
+
+            Decidim::Proposals::VoteProposal.call(proposal, current_user) do
+              on(:ok) do
+                current_vote.weight = weight if current_vote && vote_manifest
+
+                proposal.reload
+
+                proposals = Decidim::Proposals::ProposalVote.where(
+                  author: current_user,
+                  proposal: Decidim::Proposals::Proposal.where(component: current_component)
+                ).map(&:proposal)
+
+                expose(proposals: proposals)
+                render :update_buttons_and_counters
+              end
+
+              on(:invalid) do
+                render json: { error: I18n.t("proposal_votes.create.error", scope: "decidim.proposals") }, status: :unprocessable_entity
+              end
+            end
+          end
 
           private
 
@@ -18,14 +44,6 @@ module Decidim
             return if vote_manifest.valid_weight? weight, user: current_user, proposal: proposal
 
             render json: { error: I18n.t("proposal_votes.create.error", scope: "decidim.proposals") }, status: :unprocessable_entity
-          end
-
-          def update_weight
-            return unless response.status == 200
-            return unless vote_manifest
-            return unless current_vote
-
-            current_vote.weight = weight
           end
 
           def current_vote
