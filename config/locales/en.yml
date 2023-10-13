@@ -480,6 +480,9 @@ en:
       validators:
         too_much_caps: Is using too many capital letters (over %{percent}% of the
           text)
+    proposals:
+      proposal_m:
+        vote_button: Click to vote
   layouts:
     decidim:
       admin:

@@ -3,13 +3,23 @@
     <div class="card__support">
       <% if has_actions? %>
         <% if !current_settings.votes_hidden? %>
-          Num votes
-          <span id="proposal-<%= model.id %>-votes-count"><%= model.proposal_votes_count || 0 %></span>
-
+          <!--          Num votes-->
+          <!--          <span id="proposal-<%#= model.id %>-votes-count"><%#= model.proposal_votes_count || 0 %></span>-->
+          <%= cell("decidim/proposals/votes_counter", model) %>
         <% end %>
 
         <div id="proposal-<%= model.id %>-vote-button">
-          <%= render partial: "decidim/decidim_awesome/voting/three_flags/show_vote_button.html", locals: { proposal: model, from_proposals_list: true } %>
+          <%#= render partial: "decidim/decidim_awesome/voting/three_flags/show_vote_button.html", locals: { proposal: model, from_proposals_list: true } %>
+          <%= cell("decidim/proposals/vote_proposal_modal", model, modal_id: "voteProposalModal#{model.id}", proposal: model) %>
+          <button type="button" class="button hollow button--sc small"
+                  data-open="<%= "voteProposalModal#{model.id}" %>"
+                  title="Click to vote"
+                  aria-controls="<%= "voteProposalModal#{model.id}" %>"
+                  aria-haspopup="true"
+                  tabindex="0"
+                  style="cursor: pointer">
+            <%= t(".vote_button") %>
+          </button>
         </div>
 
       <% elsif has_footer? %>
