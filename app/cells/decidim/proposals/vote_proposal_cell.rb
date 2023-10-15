@@ -15,6 +15,14 @@ module Decidim
         model
       end
 
+      def vote_block_for(proposal, weight, color)
+        render partial: "vote_block", locals: {
+          proposal: proposal,
+          weight: weight,
+          color: color
+        }
+      end
+
       def proposal_votes(weight)
         model.weight_count(weight)
       end

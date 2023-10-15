@@ -35,6 +35,39 @@ module Decidim
                 render json: { error: I18n.t("proposal_votes.create.error", scope: "decidim.proposals") }, status: :unprocessable_entity
               end
             end
+
+            ActionCable.server.broadcast "proposal_vote_#{proposal.id}_channel", {
+              proposal_id: proposal.id,
+              vote_count_1: proposal.weight_count(1),
+              vote_count_2: proposal.weight_count(2),
+              vote_count_3: proposal.weight_count(3)
+            }, coder: ActiveSupport::JSON
+          end
+
+          def destroy
+            enforce_permission_to :unvote, :proposal, proposal: proposal
+            @from_proposals_list = params[:from_proposals_list] == "true"
+
+            Decidim::Proposals::UnvoteProposal.call(proposal, current_user) do
+              on(:ok) do
+                proposal.reload
+
+                proposals = Decidim::Proposals::ProposalVote.where(
+                  author: current_user,
+                  proposal: Decidim::Proposals::Proposal.where(component: current_component)
+                ).map(&:proposal)
+
+                expose(proposals: proposals + [proposal])
+                render :update_buttons_and_counters
+              end
+            end
+
+            ActionCable.server.broadcast "proposal_vote_#{proposal.id}_channel", {
+              proposal_id: proposal.id,
+              vote_count_1: proposal.weight_count(1),
+              vote_count_2: proposal.weight_count(2),
+              vote_count_3: proposal.weight_count(3)
+            }, coder: ActiveSupport::JSON
           end
 
           private
