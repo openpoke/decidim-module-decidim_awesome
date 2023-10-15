@@ -1,7 +1,7 @@
 <span class="votes_counter">
-  <%= green_votes %> |
-  <%= yellow_votes %> |
-  <%= red_votes %>
+  <span id="green-votes-<%= model.id %>" data-weight="1" class="text-success">G: <%= model.weight_count(1) %></span> |
+  <span id="yellow-votes-<%= model.id %>" data-weight="2" class="text-warning">Y: <%= model.weight_count(2) %></span> |
+  <span id="red-votes-<%= model.id %>" data-weight="3" class="text-alert">R: <%= model.weight_count(3) %></span>
 </span>
 <div id="proposal-<%= model.id %>-vote-modal">
   <%= render "vote_button" %>

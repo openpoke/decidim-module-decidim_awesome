@@ -29,19 +29,13 @@ module Decidim
 
                 expose(proposals: proposals)
                 render :update_buttons_and_counters
+                broadcast_vote_update
               end
 
               on(:invalid) do
                 render json: { error: I18n.t("proposal_votes.create.error", scope: "decidim.proposals") }, status: :unprocessable_entity
               end
             end
-
-            ActionCable.server.broadcast "proposal_vote_#{proposal.id}_channel", {
-              proposal_id: proposal.id,
-              vote_count_1: proposal.weight_count(1),
-              vote_count_2: proposal.weight_count(2),
-              vote_count_3: proposal.weight_count(3)
-            }, coder: ActiveSupport::JSON
           end
 
           def destroy
@@ -62,12 +56,7 @@ module Decidim
               end
             end
 
-            ActionCable.server.broadcast "proposal_vote_#{proposal.id}_channel", {
-              proposal_id: proposal.id,
-              vote_count_1: proposal.weight_count(1),
-              vote_count_2: proposal.weight_count(2),
-              vote_count_3: proposal.weight_count(3)
-            }, coder: ActiveSupport::JSON
+            broadcast_vote_update
           end
 
           private
@@ -89,6 +78,19 @@ module Decidim
 
           def weight
             params[:weight].to_i
+          end
+
+          def broadcast_vote_update
+            vote_counts = (1..3).each_with_object({}) do |i, hash|
+              hash["vote_count_#{i}"] = proposal.weight_count(i)
+            end
+
+            payload = {
+              proposal_id: proposal.id,
+              user_voted_weight: current_vote&.weight
+            }.merge(vote_counts)
+
+            ActionCable.server.broadcast("proposal_vote_#{proposal.id}_channel", payload, coder: ActiveSupport::JSON)
           end
         end
       end

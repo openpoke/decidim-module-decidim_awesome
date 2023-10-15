@@ -5,9 +5,9 @@
                                 proposal_vote_path(weight),
                                 resource: proposal,
                                 remote: true,
-                                method: voted_for?(proposal, weight) ? :delete : :post,
+                                method: voted_for?(weight) ? :delete : :post,
                                 data: { disable: true, "redirect-url": proposal_path(proposal) },
-                                class: "rectangle voting-block #{color} #{opacity_class_for(proposal, weight)} #{'voted' if voted_for?(proposal, weight)}" do %>
+                                class: "rectangle voting-block #{color} #{opacity_class_for(weight)} #{'voted' if voted_for?(weight)}" do %>
     <%= icon "thumb-up" %>
   <% end %>
 </div>

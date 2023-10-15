@@ -5,20 +5,27 @@ module Decidim
     class VotesCounterCell < Decidim::ViewModel
       include Decidim::IconHelper
 
+      COLORS = { 1 => "success", 2 => "warning", 3 => "alert" }.freeze
+      BUTTON_CLASSES = { 0 => "hollow", 1 => "success", 2 => "warning", 3 => "danger" }.freeze
+
       def show
         render :show
       end
 
+      def vote_span(weight, color)
+        content_tag :span, "#{color[0].upcase}:#{model.weight_count(weight)}", class: "text-#{color}"
+      end
+
       def green_votes
-        content_tag :span, "G:#{model.weight_count(1)}", class: "text-success"
+        vote_span(1, "green")
       end
 
       def yellow_votes
-        content_tag :span, "Y:#{model.weight_count(2)}", class: "text-warning"
+        vote_span(2, "yellow")
       end
 
       def red_votes
-        content_tag :span, "R:#{model.weight_count(3)}", class: "text-alert"
+        vote_span(3, "red")
       end
 
       def current_vote
@@ -30,16 +37,7 @@ module Decidim
       end
 
       def vote_btn_class
-        case user_voted_weight
-        when 1
-          "success"
-        when 2
-          "warning"
-        when 3
-          "danger"
-        else
-          "hollow"
-        end
+        BUTTON_CLASSES[user_voted_weight.to_i]
       end
     end
   end

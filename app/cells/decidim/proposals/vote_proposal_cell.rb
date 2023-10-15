@@ -7,6 +7,8 @@ module Decidim
       include Decidim::IconHelper
       include Decidim::Proposals::Engine.routes.url_helpers
 
+      VOTE_WEIGHTS = [1, 2, 3].freeze
+
       def show
         render :show
       end
@@ -27,8 +29,8 @@ module Decidim
         model.weight_count(weight)
       end
 
-      def voted_for?(proposal, option)
-        true if current_vote&.weight == option
+      def voted_for?(option)
+        current_vote&.weight == option
       end
 
       def from_proposals_list
@@ -43,16 +45,12 @@ module Decidim
         proposal_proposal_vote_path(proposal_id: proposal.id, from_proposals_list: from_proposals_list, weight: weight)
       end
 
-      def opacity_class_for(proposal, option)
-        if !voted_for_any?(proposal) || voted_for?(proposal, option)
-          "fully-opaque"
-        else
-          "semi-opaque"
-        end
+      def opacity_class_for(option)
+        !voted_for_any? || voted_for?(option) ? "fully-opaque" : "semi-opaque"
       end
 
-      def voted_for_any?(proposal)
-        [1, 2, 3].any? { |opt| voted_for?(proposal, opt) }
+      def voted_for_any?
+        VOTE_WEIGHTS.any? { |opt| voted_for?(opt) }
       end
 
       private
