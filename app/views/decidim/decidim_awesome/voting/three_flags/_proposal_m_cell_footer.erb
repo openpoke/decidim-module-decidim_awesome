@@ -1,15 +1,12 @@
 <% if has_link_to_resource? %>
   <div class="card__footer">
-    <div class="card__support">
+    <div class="card__support" style="display: block">
       <% if has_actions? %>
         <% if !current_settings.votes_hidden? %>
-          <!--          Num votes-->
-          <!--          <span id="proposal-<%#= model.id %>-votes-count"><%#= model.proposal_votes_count || 0 %></span>-->
-          <%= cell("decidim/proposals/votes_counter", model) %>
+          <span id="proposal-<%= model.id %>-votes-count"><%= model.proposal_votes_count || 0 %></span>
+          <div class="flex--sbc" id="proposal-<%= model.id %>-votes-count"><%= cell("decidim/proposals/votes_counter", model) %></div>
+          <%= cell("decidim/proposals/vote_proposal_modal", model, modal_id: "voteProposalModal#{model.id}", proposal: model, from_proposals_list: true) %>
         <% end %>
-
-        <%#= render partial: "decidim/decidim_awesome/voting/three_flags/show_vote_button.html", locals: { proposal: model, from_proposals_list: true } %>
-        <%= cell("decidim/proposals/vote_proposal_modal", model, modal_id: "voteProposalModal#{model.id}", proposal: model) %>
 
       <% elsif has_footer? %>
         <div class="card__support__data"></div>

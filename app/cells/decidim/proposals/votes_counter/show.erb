@@ -1,8 +1,8 @@
-<p class="votes_counter">
+<span class="votes_counter">
   <%= green_votes %> |
   <%= yellow_votes %> |
   <%= red_votes %>
-</p>
-<div id="proposal-<%= model.id %>-vote-button">
+</span>
+<div id="proposal-<%= model.id %>-vote-modal">
   <%= render "vote_button" %>
 </div>

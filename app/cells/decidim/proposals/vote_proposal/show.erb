@@ -1,0 +1,46 @@
+<h4 class="heading4 vote-title"><%= t("decidim.proposals.proposal_m.modal.title") %></h4>
+<div class="flex--sbc">
+  <!-- green -->
+  <div class="vote-block">
+    <p class="vote-count"><%= proposal_votes(1) %></p>
+    <p class="vote-label green">Green</p>
+    <%= action_authorized_link_to :vote,
+                                  proposal_vote_path(1),
+                                  resource: proposal, remote: true,
+                                  method: voted_for?(proposal, 1) ? :delete : :post,
+                                  data: { disable: true },
+                                  class: "rectangle voting-block green #{opacity_class_for(proposal, 1)} #{'voted' if voted_for?(proposal, 1)}" do %>
+      <%= icon "thumb-up" %>
+    <% end %>
+  </div>
+
+  <!-- yellow -->
+  <div class="vote-block">
+    <p class="vote-count"><%= proposal_votes(2) %></p>
+    <p class="vote-label yellow">Yellow</p>
+    <%= action_authorized_link_to :vote,
+                                  proposal_vote_path(2),
+                                  resource: proposal,
+                                  remote: true,
+                                  method: voted_for?(proposal, 2) ? :delete : :post,
+                                  data: { disable: true, "redirect-url": proposal_path(proposal) },
+                                  class: "rectangle voting-block yellow #{opacity_class_for(proposal, 2)} #{'voted' if voted_for?(proposal, 2)}" do %>
+      <%= icon "thumb-up" %>
+    <% end %>
+  </div>
+
+  <div class="vote-block">
+    <!-- red -->
+    <p class="vote-count"><%= proposal_votes(3) %></p>
+    <p class="vote-label red">Red</p>
+    <%= action_authorized_link_to :vote,
+                                  proposal_vote_path(3),
+                                  resource: proposal,
+                                  remote: true,
+                                  method: voted_for?(proposal, 3) ? :delete : :post,
+                                  data: { disable: true, "redirect-url": proposal_path(proposal) },
+                                  class: "rectangle voting-block red #{opacity_class_for(proposal, 3)} #{'voted' if voted_for?(proposal, 3)}" do %>
+      <%= icon "thumb-up" %>
+    <% end %>
+  </div>
+</div>

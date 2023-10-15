@@ -482,6 +482,9 @@ en:
           text)
     proposals:
       proposal_m:
+        modal:
+          title: Categorization Poll
+          message: Your vote will be considered final on %{date}. You can change it until then
         vote_button: Click to vote
   layouts:
     decidim:

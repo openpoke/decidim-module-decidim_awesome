@@ -5,5 +5,7 @@
       <span aria-hidden="true">&times;</span>
     </button>
   </div>
-  <p>Content</p>
+  <div id="proposal-<%= model.id %>-vote-button">
+    <%= cell("decidim/proposals/vote_proposal", model, proposal: model, from_proposals_list: true) %>
+  </div>
 </div>

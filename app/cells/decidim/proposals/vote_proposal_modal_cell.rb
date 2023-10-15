@@ -3,6 +3,9 @@
 module Decidim
   module Proposals
     class VoteProposalModalCell < Decidim::ViewModel
+      include Decidim::ComponentPathHelper
+      include Decidim::Proposals::Engine.routes.url_helpers
+
       def show
         render :show
       end
@@ -13,6 +16,14 @@ module Decidim
 
       def modal_id
         options[:modal_id] || "voteProposalModal"
+      end
+
+      def from_proposals_list
+        options[:from_proposals_list]
+      end
+
+      def current_component
+        proposal.component
       end
     end
   end
