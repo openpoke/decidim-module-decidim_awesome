@@ -4,8 +4,8 @@
       <% if has_actions? %>
         <% if !current_settings.votes_hidden? %>
           <span id="proposal-<%= model.id %>-votes-count"><%= model.proposal_votes_count || 0 %></span>
-          <div class="flex--sbc" id="proposal-<%= model.id %>-votes-count"><%= cell("decidim/proposals/votes_counter", model) %></div>
-          <%= cell("decidim/proposals/vote_proposal_modal", model, modal_id: "voteProposalModal#{model.id}", proposal: model, from_proposals_list: true) %>
+          <div class="flex--sbc" id="proposal-<%= model.id %>-votes-count"><%= cell("decidim/decidim_awesome/voting/three_flags_counter", model) %></div>
+          <%= cell("decidim/decidim_awesome/voting/three_flags_proposal_modal", model, modal_id: "voteProposalModal#{model.id}", proposal: model, from_proposals_list: true) %>
         <% end %>
 
       <% elsif has_footer? %>
