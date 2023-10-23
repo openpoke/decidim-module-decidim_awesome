@@ -1,16 +1,18 @@
-.voting-three-flag {
-  $rectangle-width: 7rem;
+.voting-three-flag,
+.button--vote-button {
+  $rectangle-width: 3rem;
   $green-color: #4CAF50;
   $yellow-color: #FFC107;
   $red-color: #F44336;
 
   .vote-title {
     text-align: center;
+    font-size: 1.5rem;
   }
 
   .votes_counter {
     letter-spacing: 0.2rem;
-    font-size: 1.5rem;
+    font-size: 1rem;
   }
 
   .rectangle {
@@ -63,12 +65,13 @@
     position: relative;
 
     .vote-count {
-      font-size: 3rem;
+      font-size: 2rem;
       font-weight: bold;
+      margin-bottom: 0;
     }
 
     .vote-label {
-      font-size: 1.5rem;
+      font-size: 1rem;
       margin-bottom: 0;
 
       &.green {
@@ -88,8 +91,15 @@
       position: absolute;
       bottom: 0;
       left: 10%;
-      height: 40px;
-      width: 40px;
+      height: 20px;
+      width: 20px;
     }
+  }
+
+  .button.abstain-button {
+    background-color: transparent;
+    color: black;
+    box-shadow: 0px 2px 6px 4px rgba(0, 0, 0, 0.1);
+    margin-top: 1rem;
   }
 }

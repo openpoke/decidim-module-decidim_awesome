@@ -116,6 +116,13 @@ module Decidim
                                  readonly: lambda { |context|
                                    Decidim::Proposals::Proposal.where(component: context[:component]).where.not(proposal_votes_count: 0).any?
                                  }
+              settings.attribute :proposal_vote_abstain,
+                                 type: :boolean,
+                                 default: false
+              settings.attribute :proposal_vote_instructions,
+                                 type: :text,
+                                 translated: true,
+                                 editor: true
             end
           end
         end
