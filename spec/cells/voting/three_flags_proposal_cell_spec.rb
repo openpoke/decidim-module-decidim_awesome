@@ -50,7 +50,7 @@ module Decidim
         describe "#from_proposals_list" do
           it "returns the value passed in options" do
             cell_with_option = cell("decidim/decidim_awesome/voting/three_flags_proposal", proposal, current_user: user, from_proposals_list: true)
-            expect(cell_with_option.from_proposals_list).to eq(true)
+            expect(cell_with_option.from_proposals_list).to be(true)
 
             cell_without_option = cell("decidim/decidim_awesome/voting/three_flags_proposal", proposal, current_user: user)
             expect(cell_without_option.from_proposals_list).to be_nil
