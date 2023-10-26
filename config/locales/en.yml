@@ -495,10 +495,11 @@ en:
           text)
     proposals:
       proposal_m:
-        modal:
-          title: Categorization Poll
-          message: Your vote will be considered final on %{date}. You can change it until then
         abstain: Abstain
+        modal:
+          message: Your vote will be considered final on %{date}. You can change it
+            until then
+          title: Categorization Poll
         vote_button: Click to vote
         voted: Voted
       votings:
