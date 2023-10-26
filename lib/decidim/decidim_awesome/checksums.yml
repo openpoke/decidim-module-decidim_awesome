@@ -25,6 +25,8 @@ decidim-core:
 decidim-proposals:
   /lib/decidim/proposals/proposal_serializer.rb:
     decidim-0.26: 2d817775f79a19cfcf9cfae8e5b68c5a
+  /lib/decidim/api/proposal_type.rb:
+    decidim-0.26: e38e4875e408ec4f658e28725c5a94d4
   /app/forms/decidim/proposals/proposal_wizard_create_step_form.rb:
     decidim-0.24: db69edd0ba8ffa3965a5c44a6bfaba8d
     decidim-0.27: b495d37088ecebcbe4ac9563bb3498d5
