@@ -1,26 +1,5 @@
-<%= cell("decidim/decidim_awesome/voting/three_flags_proposal_modal",
-         model,
-         modal_id: "voteProposalModal#{model.id}",
-         proposal: model,
-         weight: weight,
-         from_proposals_list: true) %>
 <div id="vote-container" data-proposal-id="<%= proposal.id %>">
   <div class="vote-block modal" data-modal-id="voteProposalModal<%= proposal.id %>" id="vote-proposal-<%= proposal.id %>">
-    <p class="vote-count" data-id="<%= proposal.id %>" data-weight="<%= weight %>"><%= proposal_votes(weight) %></p>
-    <p class="vote-label <%= color %>"><%= color.capitalize %></p>
-    <%= link_to "#",
-                "data-open": "voteProposalModal#{proposal.id}",
-                "aria-controls": "voteProposalModal#{proposal.id}",
-                "data-voted": voted_for?(weight),
-                "aria-haspopup": "true",
-                "data-weight": weight,
-                tabindex: "0",
-                class: "modal-vote rectangle voting-block #{color} #{opacity_class_for(weight)} #{'voted' if voted_for?(weight)}" do %>
-      <%= icon "thumb-up" %>
-    <% end %>
-  </div>
-<!-- If the checkbox was enabled or the user voted, the link should change to this one: -->
-  <div id="vote-link-<%= proposal.id %>-<%= weight %>" class="vote-link hidden">
     <p class="vote-count" data-id="<%= proposal.id %>" data-weight="<%= weight %>"><%= proposal_votes(weight) %></p>
     <p class="vote-label <%= color %>"><%= color.capitalize %></p>
     <%= action_authorized_link_to :vote,
@@ -29,6 +8,7 @@
                                   remote: true,
                                   method: voted_for?(weight) ? :delete : :post,
                                   class: "rectangle voting-block #{color} #{opacity_class_for(weight)} #{'voted' if voted_for?(weight)}" do %>
+      <%= icon "thumb-up" %>
     <% end %>
   </div>
 </div>

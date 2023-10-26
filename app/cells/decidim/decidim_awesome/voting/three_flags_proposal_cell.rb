@@ -8,7 +8,7 @@ module Decidim
         include Decidim::IconHelper
         include Decidim::Proposals::Engine.routes.url_helpers
 
-        VOTE_WEIGHTS = [1, 2, 3].freeze
+        VOTE_WEIGHTS = [0, 1, 2, 3].freeze
 
         def show
           render :show
@@ -53,6 +53,10 @@ module Decidim
         def voted_for_any?
           VOTE_WEIGHTS.any? { |opt| voted_for?(opt) }
         end
+
+        # def opacity_class_for_abstain
+        #   voted_for_any? ? "semi-opaque" : "fully-opaque"
+        # end
 
         private
 

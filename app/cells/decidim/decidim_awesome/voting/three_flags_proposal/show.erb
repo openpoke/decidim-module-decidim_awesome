@@ -4,4 +4,11 @@
   <%= vote_block_for(proposal, 2, "yellow") %>
   <%= vote_block_for(proposal, 3, "red") %>
 </div>
-<%= link_to t("decidim.proposals.proposal_m.modal.abstain"), "#", class: "button expanded abstain-button small" %>
+
+<%= action_authorized_link_to :vote,
+                              "Abstain",
+                              proposal_vote_path(weight: 0),
+                              resource: proposal,
+                              remote: true,
+                              method: voted_for?(0) ? :delete : :post,
+                              class: "button expanded abstain-button small #{opacity_class_for(0)}" %>
