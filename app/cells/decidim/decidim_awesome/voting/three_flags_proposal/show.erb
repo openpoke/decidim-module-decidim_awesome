@@ -6,7 +6,7 @@
 </div>
 
 <%= action_authorized_link_to :vote,
-                              "Abstain",
+                              t("decidim.proposals.proposal_m.abstain"),
                               proposal_vote_path(weight: 0),
                               resource: proposal,
                               remote: true,

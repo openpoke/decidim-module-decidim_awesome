@@ -496,10 +496,11 @@ en:
     proposals:
       proposal_m:
         modal:
-          abstain: Abstain
           title: Categorization Poll
           message: Your vote will be considered final on %{date}. You can change it until then
+        abstain: Abstain
         vote_button: Click to vote
+        voted: Voted
   layouts:
     decidim:
       admin:

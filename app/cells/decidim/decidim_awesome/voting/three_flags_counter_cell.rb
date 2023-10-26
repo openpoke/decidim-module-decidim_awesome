@@ -20,7 +20,7 @@ module Decidim
         end
 
         def green_votes
-          vote_span(1, "green")
+          vote_span(3, "green")
         end
 
         def yellow_votes
@@ -28,7 +28,7 @@ module Decidim
         end
 
         def red_votes
-          vote_span(3, "red")
+          vote_span(1, "red")
         end
 
         def user_voted_weight
