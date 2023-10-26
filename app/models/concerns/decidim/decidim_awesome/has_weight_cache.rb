@@ -11,6 +11,17 @@ module Decidim
         def weight_count(weight)
           (weight_cache && weight_cache.totals[weight.to_s]) || 0
         end
+
+        def vote_weights
+          @vote_weights ||= begin
+            totals = weight_cache&.totals || {}
+            totals.to_h { |weight, count| [manifest&.label_for(weight) || weight.to_s, count || 0] }
+          end
+        end
+
+        def manifest
+          @manifest ||= DecidimAwesome.voting_registry.find(component.settings.awesome_voting_manifest)
+        end
       end
     end
   end
