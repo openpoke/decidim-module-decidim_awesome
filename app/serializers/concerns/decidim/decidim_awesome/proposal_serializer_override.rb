@@ -32,7 +32,7 @@ module Decidim
             reference: proposal.reference,
             answer: ensure_translatable(proposal.answer),
             supports: proposal.proposal_votes_count,
-            weights: proposal.vote_weights,
+            weights: proposal_vote_weights,
             endorsements: {
               total_count: proposal.endorsements.size,
               user_endorsements: user_endorsements
@@ -50,6 +50,13 @@ module Decidim
               url: original_proposal_url
             }
           }
+        end
+
+        private
+
+        def proposal_vote_weights
+          proposal.update_vote_weights!
+          proposal.vote_weights
         end
       end
     end
