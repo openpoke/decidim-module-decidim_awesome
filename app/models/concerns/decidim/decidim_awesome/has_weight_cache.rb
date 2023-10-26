@@ -35,12 +35,11 @@ module Decidim
           self.weight_cache = weight_cache
           @vote_weights = nil
           @all_vote_weights = nil
-          @all_vote_weights_for[component] = nil if @all_vote_weights_for
         end
 
         # collects all different weights stored along the different proposals in a different component
         def self.all_vote_weights_for(component)
-          (@all_vote_weights_for ||= {})[component] ||= Decidim::DecidimAwesome::VoteWeight.where(
+          Decidim::DecidimAwesome::VoteWeight.where(
             proposal_vote_id: Decidim::Proposals::ProposalVote.where(
               proposal: Decidim::Proposals::Proposal.where(component: component)
             )

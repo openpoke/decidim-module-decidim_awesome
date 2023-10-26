@@ -493,7 +493,7 @@ en:
           text)
       votings:
         manifests:
-          three_flags: 
+          three_flags:
             weight_0: Abstain
             weight_1: Red
             weight_2: Yellow
