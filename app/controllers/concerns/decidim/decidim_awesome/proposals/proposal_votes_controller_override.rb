@@ -91,6 +91,8 @@ module Decidim
             }.merge(vote_counts)
 
             ActionCable.server.broadcast("proposal_vote_#{proposal.id}_channel", payload, coder: ActiveSupport::JSON)
+
+            params[:weight].to_i if params.has_key?(:weight)
           end
         end
       end

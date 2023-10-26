@@ -59,6 +59,8 @@ module Decidim
           Decidim::Proposals::ProposalVote.include(Decidim::DecidimAwesome::HasVoteWeight)
           # add vote weight cache to proposal
           Decidim::Proposals::Proposal.include(Decidim::DecidimAwesome::HasWeightCache)
+          Decidim::Proposals::ProposalSerializer.include(Decidim::DecidimAwesome::ProposalSerializerOverride)
+          Decidim::Proposals::ProposalType.include(Decidim::DecidimAwesome::ProposalTypeOverride)
         end
 
         Decidim::MenuPresenter.include(Decidim::DecidimAwesome::MenuPresenterOverride)
