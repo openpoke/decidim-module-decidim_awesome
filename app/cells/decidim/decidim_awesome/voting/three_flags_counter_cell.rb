@@ -3,11 +3,9 @@
 module Decidim
   module DecidimAwesome
     module Voting
-      class ThreeFlagsCounterCell < Decidim::ViewModel
-        include Decidim::IconHelper
-
-        COLORS = { 1 => "success", 2 => "warning", 3 => "alert" }.freeze
-        BUTTON_CLASSES = { 0 => "hollow", 1 => "success", 2 => "warning", 3 => "danger" }.freeze
+      class ThreeFlagsCounterCell < ThreeFlagsBaseCell
+        COLORS = { 1 => "alert", 2 => "warning", 3 => "success" }.freeze
+        BUTTON_CLASSES = { 0 => "hollow", 1 => "danger", 2 => "warning", 3 => "success" }.freeze
 
         def show
           render :show
@@ -31,10 +29,6 @@ module Decidim
 
         def red_votes
           vote_span(3, "red")
-        end
-
-        def current_vote
-          @current_vote ||= Decidim::Proposals::ProposalVote.find_by(author: current_user, proposal: model)
         end
 
         def user_voted_weight

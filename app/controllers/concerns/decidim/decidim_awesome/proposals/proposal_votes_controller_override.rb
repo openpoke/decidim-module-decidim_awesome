@@ -62,7 +62,6 @@ module Decidim
           private
 
           def validate_weight
-            return true if weight == 0
             return unless vote_manifest
             return if vote_manifest.valid_weight? weight, user: current_user, proposal: proposal
 
