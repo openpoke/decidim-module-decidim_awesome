@@ -1,11 +1,29 @@
-<div class="reveal vote_proposal_modal voting-three-flag" id="<%= modal_id %>" data-reveal role="dialog" aria-modal="true" aria-labelledby="<%= modal_id %>-label">
-  <div class="reveal__header">
-    <h3 id="<%= modal_id %>-label" class="reveal__title"><%= translated_attribute(model.title) %></h3>
-    <button class="close-button" data-close aria-label="Close" type="button">
-      <span aria-hidden="true">&times;</span>
-    </button>
+<!--<div class="reveal vote_proposal_modal voting-three-flag" id="<%#= modal_id %>" data-reveal role="dialog" aria-modal="true" aria-labelledby="<%#= modal_id %>-label">-->
+<!--  <div class="reveal__header">-->
+<!--    <h3 id="<%#= modal_id %>-label" class="reveal__title"><%#= translated_attribute(model.title) %></h3>-->
+<!--    <button class="close-button" data-close aria-label="Close" type="button">-->
+<!--      <span aria-hidden="true">&times;</span>-->
+<!--    </button>-->
+<!--  </div>-->
+<!--  <div id="proposal-<%#= model.id %>-vote-button">-->
+<%#= cell("decidim/decidim_awesome/voting/three_flags_proposal", model, proposal: model, from_proposals_list: true) %>
+<!--  </div>-->
+<!--</div>-->
+
+<div class="reveal vote_proposal_modal voting-three-flag" id="<%= modal_id %>" data-reveal role="dialog" aria-modal="true" aria-labelledby="<%#= modal_id %>-label">
+  <div class="reveal__content">
+    <p><%= vote_instructions %></p>
+    <div>
+      <%= check_box_tag "#{modal_id}-no_more_messages", true, false, id: "#{modal_id}-no-more-messages" %>
+      <%= label_tag "#{modal_id}-no-more-messages", "Check here to not receive these messages in the future" %>
+    </div>
   </div>
-  <div id="proposal-<%= model.id %>-vote-button">
-    <%= cell("decidim/decidim_awesome/voting/three_flags_proposal", model, proposal: model, from_proposals_list: true) %>
-  </div>
+  <%= action_authorized_link_to :vote,
+                                proposal_vote_path(weight: weight),
+                                resource: proposal,
+                                remote: true,
+                                method: :post,
+                                class: "button" do %>
+    Proceed
+  <% end %>
 </div>

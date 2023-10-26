@@ -13,6 +13,10 @@ module Decidim
           render :show
         end
 
+        def resource_path
+          resource_locator(model).path
+        end
+
         def vote_span(weight, color)
           content_tag :span, "#{color[0].upcase}:#{model.weight_count(weight)}", class: "text-#{color}"
         end

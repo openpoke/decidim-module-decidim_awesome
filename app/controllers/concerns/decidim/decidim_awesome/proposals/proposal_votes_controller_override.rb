@@ -77,7 +77,7 @@ module Decidim
           end
 
           def weight
-            params[:weight].to_i
+            params.dig(:weight, :weight).to_i
           end
 
           def broadcast_vote_update

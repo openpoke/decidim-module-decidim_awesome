@@ -1,13 +1,10 @@
-<button type="button" class="button <%= vote_btn_class %> button--sc"
-        data-open="<%= "voteProposalModal#{model.id}" %>"
-        title="Click to vote"
-        aria-controls="<%= "voteProposalModal#{model.id}" %>"
-        aria-haspopup="true"
-        tabindex="0"
-        style="cursor: pointer; padding-top: 0.6rem; padding-bottom: 0.6rem;margin-bottom: 0">
+<%= link_to resource_path,
+            class: "button #{vote_btn_class} button--sc",
+            title: 'Click to vote',
+            style: 'cursor: pointer; padding-top: 0.6rem; padding-bottom: 0.6rem; margin-bottom: 0' do %>
   <% if user_voted_weight %>
     <%= icon "actions", class: "icon" %><span> Voted</span>
   <% else %>
     <%= t("decidim.proposals.proposal_m.vote_button") %>
   <% end %>
-</button>
+<% end %>
