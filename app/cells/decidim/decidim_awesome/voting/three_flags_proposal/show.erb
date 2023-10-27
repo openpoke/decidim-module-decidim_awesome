@@ -17,11 +17,12 @@
   <%= vote_block_for(proposal, 2, "yellow") %>
   <%= vote_block_for(proposal, 1, "red") %>
 </div>
-
-<%= action_authorized_link_to :vote,
-                              t("decidim.decidim_awesome.proposal_m.abstain"),
-                              proposal_vote_path(0),
-                              resource: proposal,
-                              remote: true,
-                              method: :post,
-                              class: "button expanded abstain-button small #{opacity_class_for(0)}" %>
+<% if current_component.settings.proposal_vote_abstain %>
+  <%= action_authorized_link_to :vote,
+                                t("decidim.decidim_awesome.proposal_m.abstain"),
+                                proposal_vote_path(0),
+                                resource: proposal,
+                                remote: true,
+                                method: :post,
+                                class: "button expanded abstain-button small #{opacity_class_for(0)}" %>
+<% end %>

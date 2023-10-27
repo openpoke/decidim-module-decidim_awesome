@@ -6,11 +6,12 @@ describe "Three flags", type: :system do
   include_context "with a component"
   let!(:organization) { create :organization }
   let(:manifest) { :three_flags }
-  let!(:component) { create :proposal_component, :with_votes_enabled, organization: organization, settings: { awesome_voting_manifest: manifest } }
+  let!(:component) { create :proposal_component, :with_votes_enabled, organization: organization, settings: { awesome_voting_manifest: manifest, proposal_vote_abstain: proposal_vote_abstain } }
   let!(:proposals) { create_list(:proposal, 3, component: component) }
   let!(:proposal) { Decidim::Proposals::Proposal.find_by(component: component) }
   let(:proposal_title) { translated(proposal.title) }
   let(:user) { create :user, :confirmed, organization: organization }
+  let(:proposal_vote_abstain) { true }
 
   def click_to_vote
     within "#proposal-#{proposal.id}-vote-button" do
@@ -127,7 +128,7 @@ describe "Three flags", type: :system do
             expect(page).to have_selector("#vote-proposal-#{proposal.id}-3 a.fully-opaque")
           end
 
-          context "when user abstains" do
+          context "when abstain option enabled" do
             before do
               click_link "Abstain"
             end
@@ -144,6 +145,14 @@ describe "Three flags", type: :system do
               expect(page).to have_selector("#vote-proposal-#{proposal.id}-1 a.non-clickable")
               expect(page).to have_selector("#vote-proposal-#{proposal.id}-2 a.non-clickable")
               expect(page).to have_selector("#vote-proposal-#{proposal.id}-3 a.non-clickable")
+            end
+          end
+
+          context "when abstain option disabled" do
+            let(:proposal_vote_abstain) { false }
+
+            it "does not show abstain option" do
+              expect(page).not_to have_content("Abstain")
             end
           end
         end
