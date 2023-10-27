@@ -493,6 +493,13 @@ en:
       validators:
         too_much_caps: Is using too many capital letters (over %{percent}% of the
           text)
+      votings:
+        manifests:
+          three_flags:
+            weight_0: Abstain
+            weight_1: Red
+            weight_2: Yellow
+            weight_3: Green
     proposals:
       proposal_m:
         abstain: Abstain
@@ -502,13 +509,6 @@ en:
           title: Categorization Poll
         vote_button: Click to vote
         voted: Voted
-      votings:
-        manifests:
-          three_flags:
-            weight_0: Abstain
-            weight_1: Red
-            weight_2: Yellow
-            weight_3: Green
   layouts:
     decidim:
       admin:
