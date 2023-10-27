@@ -60,6 +60,10 @@
     pointer-events: none;
   }
 
+  .non-clickable {
+    pointer-events: none;
+  }
+
   .vote-block,
   .vote-link {
     display: flex;
