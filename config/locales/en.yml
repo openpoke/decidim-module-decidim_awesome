@@ -492,6 +492,7 @@ en:
             view_proposal: View proposal
       proposal_m:
         abstain: Abstain
+        change_vote: Change my vote
         modal:
           message: Your vote will be considered final on %{date}. You can change it
             until then
