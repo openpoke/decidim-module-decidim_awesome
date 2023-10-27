@@ -119,6 +119,9 @@ module Decidim
                                  readonly: lambda { |context|
                                    Decidim::Proposals::Proposal.where(component: context[:component]).where.not(proposal_votes_count: 0).any?
                                  }
+              settings.attribute :three_flags_box_title,
+                                 type: :string,
+                                 translated: true
               settings.attribute :three_flags_show_modal_help,
                                  type: :boolean,
                                  default: true

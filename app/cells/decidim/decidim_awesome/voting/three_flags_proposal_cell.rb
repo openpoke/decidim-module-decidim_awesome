@@ -43,6 +43,13 @@ module Decidim
         def voted_for_any?
           VOTE_WEIGHTS.any? { |opt| voted_for?(opt) }
         end
+
+        def title
+          txt ||= translated_attribute(current_component.settings.three_flags_box_title)
+          return "" if txt == "-"
+
+          txt.presence || t("decidim.decidim_awesome.voting.three_flags.default_box_title")
+        end
       end
     end
   end

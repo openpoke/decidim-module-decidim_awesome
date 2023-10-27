@@ -11,7 +11,8 @@ module Decidim
         end
 
         def vote_instructions
-          translated_attribute(current_component.settings.three_flags_instructions)
+          translated_attribute(current_component.settings.three_flags_instructions).presence || t("decidim.decidim_awesome.voting.three_flags.default_instructions_html",
+                                                                                                  organization: current_organization.name)
         end
       end
     end

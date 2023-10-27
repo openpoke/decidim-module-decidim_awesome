@@ -6,8 +6,10 @@
       <%= check_box_tag "three_flag-skip_help", current_component.id, false %>
       <%= label_tag "three_flag-skip_help", t("decidim.decidim_awesome.voting.three_flags.modal.skip") %>
     </div>
-  </div>
 
-  <button class="button vote-action"><%= t("decidim.decidim_awesome.voting.three_flags.modal.proceed") %></button>
-  <button class="button cancel-action hollow secondary" data-close><%= t("decidim.decidim_awesome.voting.three_flags.modal.cancel") %></button>
+    <div class="text-center">
+      <button class="button vote-action"><%= t("decidim.decidim_awesome.voting.three_flags.modal.proceed") %></button>
+      <button class="button cancel-action hollow secondary" data-close><%= t("decidim.decidim_awesome.voting.three_flags.modal.cancel") %></button>
+    </div>
+  </div>
 </div>
