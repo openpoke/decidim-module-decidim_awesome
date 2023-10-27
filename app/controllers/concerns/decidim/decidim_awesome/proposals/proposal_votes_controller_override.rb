@@ -29,34 +29,12 @@ module Decidim
 
                 expose(proposals: proposals)
                 render :update_buttons_and_counters
-                broadcast_vote_update
               end
 
               on(:invalid) do
                 render json: { error: I18n.t("proposal_votes.create.error", scope: "decidim.proposals") }, status: :unprocessable_entity
               end
             end
-          end
-
-          def destroy
-            enforce_permission_to :unvote, :proposal, proposal: proposal
-            @from_proposals_list = params[:from_proposals_list] == "true"
-
-            Decidim::Proposals::UnvoteProposal.call(proposal, current_user) do
-              on(:ok) do
-                proposal.reload
-
-                proposals = Decidim::Proposals::ProposalVote.where(
-                  author: current_user,
-                  proposal: Decidim::Proposals::Proposal.where(component: current_component)
-                ).map(&:proposal)
-
-                expose(proposals: proposals + [proposal])
-                render :update_buttons_and_counters
-              end
-            end
-
-            broadcast_vote_update
           end
 
           private
@@ -77,21 +55,6 @@ module Decidim
           end
 
           def weight
-            params.dig(:weight, :weight).to_i
-          end
-
-          def broadcast_vote_update
-            vote_counts = (1..3).each_with_object({}) do |i, hash|
-              hash["vote_count_#{i}"] = proposal.weight_count(i)
-            end
-
-            payload = {
-              proposal_id: proposal.id,
-              user_voted_weight: current_vote&.weight
-            }.merge(vote_counts)
-
-            ActionCable.server.broadcast("proposal_vote_#{proposal.id}_channel", payload, coder: ActiveSupport::JSON)
-
             params[:weight].to_i if params.has_key?(:weight)
           end
         end
