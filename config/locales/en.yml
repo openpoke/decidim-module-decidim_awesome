@@ -498,7 +498,7 @@ en:
           text)
       voting:
         three_flags:
-          change_vote: Change my vote
+          change_vote: 👉 Change my vote
           modal:
             message: Your vote will be considered final on %{date}. You can change
               it until then
