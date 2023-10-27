@@ -10,11 +10,10 @@ module Decidim
           render :show
         end
 
-        def vote_block_for(proposal, weight, color)
+        def vote_block_for(proposal, weight)
           render partial: "vote_block", locals: {
             proposal: proposal,
-            weight: weight,
-            color: color
+            weight: weight
           }
         end
 

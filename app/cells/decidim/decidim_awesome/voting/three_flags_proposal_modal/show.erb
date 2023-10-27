@@ -1,18 +1,13 @@
 <!--the modal window will be used in another pr-->
-<div class="reveal vote_proposal_modal voting-three-flag" id="<%= modal_id %>" data-reveal role="dialog" aria-modal="true" aria-labelledby="<%#= modal_id %>-label">
+<div class="reveal vote_proposal_modal voting-three-flag" id="threeFlagsModalHelp" data-reveal role="dialog" aria-modal="true" aria-labelledby="threeFlagsModalHelp-label">
   <div class="reveal__content">
-    <p><%= vote_instructions %></p>
+    <div class="instructions"><%= vote_instructions %></div>
     <div>
-      <%= check_box_tag "#{modal_id}-no_more_messages", true, false, id: "#{modal_id}-no-more-messages" %>
-      <%= label_tag "#{modal_id}-no-more-messages", "Check here to not receive these messages in the future" %>
+      <%= check_box_tag "no_more_messages", true, false %>
+      <%= label_tag "no-more-messages", "Check here to skip this window in the future" %>
     </div>
   </div>
-  <%= action_authorized_link_to :vote,
-                                proposal_vote_path(weight),
-                                resource: proposal,
-                                remote: true,
-                                method: :post,
-                                class: "button" do %>
-    Proceed
-  <% end %>
+
+  <button class="button vote-action">Proceed</button>
+  <button class="button cancel-action hollow secondary" data-close>Cancel</button>
 </div>
