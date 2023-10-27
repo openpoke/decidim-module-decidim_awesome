@@ -7,7 +7,7 @@
                                   resource: proposal,
                                   remote: true,
                                   data: { label: proposal.manifest.label_for(weight), weight: weight },
-                                  method: voted_for?(weight) ? :delete : :post,
+                                  method: :post,
                                   class: "vote-action rectangle voting-block weight_#{weight} #{opacity_class_for(weight)} #{'voted' if voted_for?(weight)}" do %>
       <%= icon "thumb-up" %>
     <% end %>
