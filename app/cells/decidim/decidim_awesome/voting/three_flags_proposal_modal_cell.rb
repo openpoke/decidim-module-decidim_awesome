@@ -11,7 +11,7 @@ module Decidim
         end
 
         def vote_instructions
-          translated_attribute(current_component.settings.proposal_vote_instructions)
+          translated_attribute(current_component.settings.three_flags_instructions)
         end
       end
     end

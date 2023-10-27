@@ -1,8 +1,8 @@
-<h4 class="heading4 vote-title"><%= t("decidim.decidim_awesome.proposal_m.modal.title") %></h4>
+<h4 class="heading4 vote-title"><%= t("decidim.decidim_awesome.voting.three_flags.modal.title") %></h4>
 <% if voted_for_any? %>
   <p class="text-center">
     <%= action_authorized_link_to :unvote,
-                                  "👉 #{t('decidim.decidim_awesome.proposal_m.change_vote')}",
+                                  "👉 #{t('decidim.decidim_awesome.voting.three_flags.change_vote')}",
                                   proposal_vote_path(current_vote&.weight),
                                   resource: proposal,
                                   remote: true,
@@ -17,7 +17,7 @@
   <%= vote_block_for(proposal, 2) %>
   <%= vote_block_for(proposal, 1) %>
 </div>
-<% if current_component.settings.proposal_vote_abstain %>
+<% if current_component.settings.three_flags_show_abstain %>
   <%= action_authorized_link_to :vote,
                                 proposal.manifest.label_for(0),
                                 proposal_vote_path(0),

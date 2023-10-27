@@ -1,5 +1,5 @@
 $(() => {
-  if ($(".voting-three-flags").length === 0) {
+  if ($(".voting-three-flags").length === 0 || $("#threeFlagsModalHelp").length === 0) {
     return;
   }
 

@@ -198,7 +198,7 @@ if Decidim::DecidimAwesome.enabled?(:weighted_proposal_voting)
 
     # optionally, define a label generator block
     # by default labels are extracted from a I18n key following this rule
-    # "decidim.decidim_awesome.votings.manifests.{MANIFEST_NAME}.weight_{WEIGHT}"
+    # "decidim.decidim_awesome.voting.{MANIFEST_NAME}.weights.weight_{WEIGHT}"
     #
     # voting.label_generator do |weight, context|
     #   "Weight #{weight.round}"
