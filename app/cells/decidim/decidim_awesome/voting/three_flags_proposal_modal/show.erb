@@ -8,7 +8,7 @@
     </div>
   </div>
   <%= action_authorized_link_to :vote,
-                                proposal_vote_path(weight: weight),
+                                proposal_vote_path(weight),
                                 resource: proposal,
                                 remote: true,
                                 method: :post,

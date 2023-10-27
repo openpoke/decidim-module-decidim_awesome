@@ -3,7 +3,7 @@
     <p class="vote-count" data-id="<%= proposal.id %>" data-weight="<%= weight %>"><%= proposal_votes(weight) %></p>
     <p class="vote-label <%= color %>"><%= color.capitalize %></p>
     <%= action_authorized_link_to :vote,
-                                  proposal_vote_path(weight: weight),
+                                  proposal_vote_path(weight),
                                   resource: proposal,
                                   remote: true,
                                   method: voted_for?(weight) ? :delete : :post,

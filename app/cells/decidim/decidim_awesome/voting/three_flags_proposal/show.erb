@@ -7,7 +7,7 @@
 
 <%= action_authorized_link_to :vote,
                               t("decidim.proposals.proposal_m.abstain"),
-                              proposal_vote_path(weight: 0),
+                              proposal_vote_path(0),
                               resource: proposal,
                               remote: true,
                               method: voted_for?(0) ? :delete : :post,
