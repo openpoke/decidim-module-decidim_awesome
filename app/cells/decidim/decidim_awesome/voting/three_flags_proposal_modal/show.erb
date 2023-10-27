@@ -3,8 +3,8 @@
   <div class="reveal__content">
     <div class="instructions"><%= vote_instructions %></div>
     <div>
-      <%= check_box_tag "no_more_messages", true, false %>
-      <%= label_tag "no-more-messages", "Check here to skip this window in the future" %>
+      <%= check_box_tag "three_flag-skip_help", current_component.id, false %>
+      <%= label_tag "three_flag-skip_help", "Check here to skip this window in the future" %>
     </div>
   </div>
 
