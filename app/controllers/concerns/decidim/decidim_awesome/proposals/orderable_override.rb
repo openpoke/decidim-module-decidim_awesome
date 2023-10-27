@@ -22,6 +22,7 @@ module Decidim
             end
           end
 
+          # rubocop:disable Metrics/CyclomaticComplexity
           def reorder(proposals)
             case order
             when "supported_first"
@@ -44,6 +45,7 @@ module Decidim
               proposals.order(coauthorships_count: :desc)
             end
           end
+          # rubocop:enable Metrics/CyclomaticComplexity
 
           def my_votes_join
             votes_table = Decidim::Proposals::ProposalVote.arel_table
