@@ -46,7 +46,7 @@ $(() => {
       evt.preventDefault();
       $check.prop("checked", isChecked());
       $modal.data("action", evt.currentTarget);
-      $card[0].classList = evt.currentTarget.classList + ["voted"];
+      $card[0].classList = evt.currentTarget.classList;
       if (evt.currentTarget.children.length > 1) {
         $card.html(`${evt.currentTarget.children[1].outerHTML}<p class="vote-label">${evt.currentTarget.children[1].children[0].textContent}</p>`);
       } else if ($card[0].classList.contains("button")) {

@@ -35,7 +35,7 @@ module Decidim
 
         def link_options(weight)
           ops = {
-            class: "vote-action vote-card weight_#{weight} #{opacity_class_for(weight)} #{"voted" if voted_for?(weight)}"
+            class: "vote-action vote-card #{classes_for(weight)}"
           }
           if current_user
             ops.merge!({
@@ -52,11 +52,13 @@ module Decidim
           "#{asset_pack_path("media/images/#{card}.svg")}#handcard"
         end
 
-        def opacity_class_for(weight)
-          opacity = !voted_for_any? || voted_for?(weight) ? "" : "semi-opaque"
-          clickable = voted_for_any? ? "non-clickable" : ""
+        def classes_for(weight)
+          ops = ["weight_#{weight}"]
+          ops << "voted" if voted_for?(weight)
+          ops << "non-clickable" if voted_for_any?
+          ops << "dim" if voted_for_any? && !voted_for?(weight)
 
-          [opacity, clickable].reject(&:empty?).join(" ")
+          ops.join(" ")
         end
 
         def voted_for_any?

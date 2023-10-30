@@ -10,10 +10,10 @@
   <%= action_authorized_link_to :vote,
                                 voted_for?(0) ? t("decidim.decidim_awesome.voting.three_flags.abstained") : proposal.manifest.label_for(0),
                                 proposal_vote_path(0),
-                                remote: true,
-                                method: :post,
-                                title: t("decidim.decidim_awesome.voting.three_flags.voting_for", type: proposal.manifest.label_for(0)),
-                                class: "button secondary hollow expanded vote-action abstain-button small #{opacity_class_for(0)}" %>
+                                link_options(0).merge({
+                                  title: t("decidim.decidim_awesome.voting.three_flags.voting_for", type: proposal.manifest.label_for(0)),
+                                  class: "button secondary hollow expanded vote-action abstain-button small #{classes_for(0)}"
+                                  }) %>
 <% end %>
 
 <% if voted_for_any? %>
