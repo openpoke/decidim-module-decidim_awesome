@@ -518,6 +518,10 @@ en:
           voted: Voted
           voting_for: My vote is "%{type}"
           weights:
+            r: R
+            g: G
+            y: Y
+            a: A
             weight_0: Abstain
             weight_1: Red
             weight_2: Yellow

@@ -4,6 +4,17 @@
   $yellow-color: #ffc107;
   $red-color: #f44336;
 
+  &-card {
+    a {
+      margin-bottom: 0;
+
+      > svg {
+        margin-bottom: 2px;
+        vertical-align: middle;
+      }
+    }
+  }
+
   margin-bottom: 1.5rem;
   border-bottom: 2px solid #d9d9d9;
 
@@ -29,6 +40,7 @@
 
     &::before {
       @include spinner(25px, $medium-gray, var(--primary), 800ms);
+
       z-index: 1000;
       content: "";
       vertical-align: middle;

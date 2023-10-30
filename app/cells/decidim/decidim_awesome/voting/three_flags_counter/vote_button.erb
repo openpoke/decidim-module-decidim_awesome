@@ -1,9 +1,8 @@
 <%= link_to resource_path,
             class: "button #{vote_btn_class} button--sc",
-            title: t("decidim.decidim_awesome.voting.three_flags.vote_button"),
-            style: "cursor: pointer; padding-top: 0.6rem; padding-bottom: 0.6rem; margin-bottom: 0" do %>
+            title: t("decidim.decidim_awesome.voting.three_flags.vote_button") do %>
   <% if user_voted_weight %>
-    <%= icon "actions", class: "icon" %><span><%= t("decidim.decidim_awesome.voting.three_flags.voted") %></span>
+    <%= icon "actions", class: "icon" %> <%= t("decidim.decidim_awesome.voting.three_flags.voted") %>
   <% else %>
     <%= t("decidim.decidim_awesome.voting.three_flags.vote_button") %>
   <% end %>

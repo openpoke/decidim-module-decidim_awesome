@@ -158,4 +158,98 @@ describe "Three flags", type: :system do
       end
     end
   end
+
+  context "when listing proposals" do
+    before do
+      login_as user, scope: :user
+      visit_component
+    end
+
+    let!(:vote_weights) do
+      [
+        create_list(:awesome_vote_weight, 3, vote: create(:proposal_vote, proposal: proposal), weight: 1),
+        create_list(:awesome_vote_weight, 2, vote: create(:proposal_vote, proposal: proposal), weight: 2),
+        create_list(:awesome_vote_weight, 1, vote: create(:proposal_vote, proposal: proposal), weight: 3),
+        create_list(:awesome_vote_weight, 4, vote: create(:proposal_vote, proposal: proposal), weight: 0)
+      ]
+    end
+
+    it "shows the vote count" do
+      within "#proposal_#{proposal.id}" do
+        expect(page).to have_content("G: 1")
+        expect(page).to have_content("Y: 2")
+        expect(page).to have_content("R: 3")
+        expect(page).to have_content("A: 4")
+        expect(page).to have_link("Click to vote")
+      end
+    end
+
+    context "when abstain is disabled" do
+      let(:abstain) { false }
+
+      it "shows the vote count" do
+        within "#proposal_#{proposal.id}" do
+          expect(page).to have_content("G: 1")
+          expect(page).to have_content("Y: 2")
+          expect(page).to have_content("R: 3")
+          expect(page).not_to have_content("A: 4")
+          expect(page).to have_link("Click to vote")
+        end
+      end
+    end
+
+    context "when the user has voted" do
+      let!(:vote_weights) do
+        [
+          create_list(:awesome_vote_weight, 1, vote: create(:proposal_vote, proposal: proposal, author: user), weight: 1),
+          create_list(:awesome_vote_weight, 2, vote: create(:proposal_vote, proposal: proposal), weight: 2),
+          create_list(:awesome_vote_weight, 3, vote: create(:proposal_vote, proposal: proposal), weight: 3)
+        ]
+      end
+
+      it "shows the vote count" do
+        within "#proposal_#{proposal.id}" do
+          expect(page).to have_content("G: 3")
+          expect(page).to have_content("Y: 2")
+          expect(page).to have_content("R: 1")
+          expect(page).to have_content("A: 0")
+          expect(page).to have_link("Voted")
+        end
+      end
+    end
+  end
+
+  context "when the user is not logged in" do
+    before do
+      visit_component
+    end
+
+    let!(:vote_weights) do
+      [
+        create_list(:awesome_vote_weight, 3, vote: create(:proposal_vote, proposal: proposal), weight: 1),
+        create_list(:awesome_vote_weight, 2, vote: create(:proposal_vote, proposal: proposal), weight: 2),
+        create_list(:awesome_vote_weight, 1, vote: create(:proposal_vote, proposal: proposal), weight: 3),
+        create_list(:awesome_vote_weight, 4, vote: create(:proposal_vote, proposal: proposal), weight: 0)
+      ]
+    end
+
+    it "shows the vote count" do
+      within "#proposal_#{proposal.id}" do
+        expect(page).to have_content("G: 1")
+        expect(page).to have_content("Y: 2")
+        expect(page).to have_content("R: 3")
+        expect(page).to have_content("A: 4")
+        expect(page).to have_link("Click to vote")
+      end
+    end
+
+    it "show the modal window on voting" do
+      within "#proposal_#{proposal.id}" do
+        click_link "Click to vote"
+      end
+      expect(page).to have_selector("#loginModal", visible: :hidden)
+      click_link "Abstain"
+      expect(page).to have_selector("#loginModal", visible: :visible)
+    end
+  end
 end
