@@ -243,6 +243,27 @@ describe "Three flags", type: :system do
       end
     end
 
+    context "when no manifest" do
+      let(:manifest) { nil }
+
+      it "has normal support button" do
+        within "#proposal_#{proposal.id}" do
+          expect(page).to have_content("Support")
+          expect(page).not_to have_content("G:")
+          expect(page).not_to have_content("Y:")
+          expect(page).not_to have_content("R:")
+          click_link proposal.title["en"]
+        end
+
+        within ".button--vote-button" do
+          expect(page).to have_content("Support")
+          expect(page).not_to have_content("Green")
+          expect(page).not_to have_content("Yellow")
+          expect(page).not_to have_content("Red")
+        end
+      end
+    end
+
     it "show the modal window on voting" do
       within "#proposal_#{proposal.id}" do
         click_link "Click to vote"
