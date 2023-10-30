@@ -88,13 +88,29 @@ module Decidim
 
           if DecidimAwesome.enabled?(:weighted_proposal_voting)
             Decidim::Proposals::ProposalVotesController.include(Decidim::DecidimAwesome::Proposals::ProposalVotesControllerOverride)
-            Decidim::Proposals::ProposalsController.include(Decidim::DecidimAwesome::Proposals::OrderableOverride)
           end
+
+          Decidim::Proposals::ProposalsController.include(Decidim::DecidimAwesome::Proposals::OrderableOverride) if DecidimAwesome.enabled?(:additional_proposal_sortings)
         end
       end
 
       initializer "decidim_decidim_awesome.middleware" do |app|
         app.config.middleware.insert_after Decidim::Middleware::CurrentOrganization, Decidim::DecidimAwesome::CurrentConfig
+      end
+
+      initializer "decidim_decidim_awesome.additional_proposal_sortings" do |_app|
+        if DecidimAwesome.enabled?(:additional_proposal_sortings) && DecidimAwesome.additional_proposal_sortings.is_a?(Array)
+          possible_orders = %w(default random recent most_endorsed most_voted most_commented most_followed
+                               with_more_authors) + DecidimAwesome.additional_proposal_sortings.map(&:to_s)
+          Decidim.component_registry.find(:proposals).tap do |component|
+            component.settings(:global) do |settings|
+              settings.attribute :default_sort_order, type: :select, default: "default", choices: -> { possible_orders }
+            end
+            component.settings(:step) do |settings|
+              settings.attribute :default_sort_order, type: :select, include_blank: true, choices: -> { possible_orders }
+            end
+          end
+        end
       end
 
       initializer "decidim_decidim_awesome.weighted_proposal_voting" do |_app|

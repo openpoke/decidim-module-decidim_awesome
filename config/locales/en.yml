@@ -129,6 +129,11 @@ en:
             awesome_voting_manifest_options:
               default: Simple vote (default)
               three_flags: Voting using coloured cards
+            default_sort_order_options:
+              az: A-Z (Alphabetical)
+              supported_first: Supported first
+              supported_last: Supported last
+              za: Z-A (Reverse alphabetical)
             three_flags_box_title: Title for the voting box
             three_flags_box_title_help: Default is "Vote on this proposal". Use "-"
               to hide it.
@@ -139,6 +144,12 @@ en:
             three_flags_show_abstain: Add an abstention option
             three_flags_show_modal_help: Show instructions/help modal when support
               is clicked
+          step:
+            default_sort_order_options:
+              az: A-Z (Alphabetical)
+              supported_first: Supported first
+              supported_last: Supported last
+              za: Z-A (Reverse alphabetical)
     decidim_awesome:
       admin:
         admin_accountability:
@@ -529,8 +540,10 @@ en:
     proposals:
       proposals:
         orders:
+          az: A-Z (Alphabetical)
           supported_first: Supported first
           supported_last: Supported last
+          za: Z-A (Reverse alphabetical)
   layouts:
     decidim:
       admin:
