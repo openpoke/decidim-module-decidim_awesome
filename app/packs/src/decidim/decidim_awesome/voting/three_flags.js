@@ -49,6 +49,9 @@ $(() => {
       $card[0].classList = evt.currentTarget.classList + ["voted"];
       if (evt.currentTarget.children.length > 1) {
         $card.html(`${evt.currentTarget.children[1].outerHTML}<p class="vote-label">${evt.currentTarget.children[1].children[0].textContent}</p>`);
+      } else if ($card[0].classList.contains("button")) {
+        $card[0].classList.remove("button");
+        $card.html(`<p class="vote-label">${evt.currentTarget.title}</p>`);
       } else {
         $card.html(`<p class="vote-label">${evt.currentTarget.textContent}</p>`);
       }

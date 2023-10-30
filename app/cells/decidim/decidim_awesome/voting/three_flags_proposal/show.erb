@@ -6,25 +6,24 @@
   <%= vote_block_for(proposal, 1) %>
 </div>
 
+<% if current_component.settings.three_flags_show_abstain %>
+  <%= action_authorized_link_to :vote,
+                                voted_for?(0) ? t("decidim.decidim_awesome.voting.three_flags.abstained") : proposal.manifest.label_for(0),
+                                proposal_vote_path(0),
+                                remote: true,
+                                method: :post,
+                                title: t("decidim.decidim_awesome.voting.three_flags.voting_for", type: proposal.manifest.label_for(0)),
+                                class: "button secondary hollow expanded vote-action abstain-button small #{opacity_class_for(0)}" %>
+<% end %>
+
 <% if voted_for_any? %>
   <p class="text-center">
     <%= action_authorized_link_to :unvote,
                                   t("decidim.decidim_awesome.voting.three_flags.change_vote"),
                                   proposal_vote_path(current_vote&.weight),
-                                  resource: proposal,
                                   remote: true,
                                   method: :delete,
                                   id: "change-vote",
                                   class: "change-vote-button vote-action" %>
   </p>
-<% end %>
-
-<% if current_component.settings.three_flags_show_abstain %>
-  <%= action_authorized_link_to :vote,
-                                proposal.manifest.label_for(0),
-                                proposal_vote_path(0),
-                                resource: proposal,
-                                remote: true,
-                                method: :post,
-                                class: "button expanded abstain-button small #{opacity_class_for(0)}" %>
 <% end %>

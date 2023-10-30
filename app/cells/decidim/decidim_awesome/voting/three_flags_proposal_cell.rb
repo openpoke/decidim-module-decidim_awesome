@@ -53,7 +53,7 @@ module Decidim
         end
 
         def opacity_class_for(weight)
-          opacity = !voted_for_any? || voted_for?(weight) ? "fully-opaque" : "semi-opaque"
+          opacity = !voted_for_any? || voted_for?(weight) ? "" : "semi-opaque"
           clickable = voted_for_any? ? "non-clickable" : ""
 
           [opacity, clickable].reject(&:empty?).join(" ")
