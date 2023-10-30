@@ -233,13 +233,19 @@ describe "Three flags", type: :system do
       ]
     end
 
-    it "shows the vote count" do
+    it "shows the vote count", :caching do
       within "#proposal_#{proposal.id}" do
         expect(page).to have_content("G: 1")
         expect(page).to have_content("Y: 2")
         expect(page).to have_content("R: 3")
         expect(page).to have_content("A: 4")
         expect(page).to have_link("Click to vote")
+        # check the cached card by maintaining the number of votes and change the weight
+        Decidim::DecidimAwesome::VoteWeight.find_by(weight: 3).update(weight: 1)
+        visit_component
+        expect(page).to have_content("G: 0")
+        expect(page).to have_content("Y: 2")
+        expect(page).to have_content("R: 4")
       end
     end
 
