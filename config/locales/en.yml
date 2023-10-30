@@ -503,7 +503,7 @@ en:
           text)
       voting:
         three_flags:
-          change_vote: Change my vote
+          change_vote: "\U0001F449 Change my vote"
           default_box_title: Vote on this proposal
           default_instructions_html: <p>Please read the election rules carefully to
             understand how your vote will be used by %{organization}"</p>
