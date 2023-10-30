@@ -8,10 +8,15 @@
 
   &.current-choice {
     text-align: center;
+    margin-bottom: 0;
 
-    .vote-card .vote-label {
-      margin-bottom: 1rem;
-      color: $black;
+    .vote-card {
+      margin-top: .5rem;
+
+      .vote-label {
+        margin-bottom: 1rem;
+        color: $black;
+      }
     }
   }
 
