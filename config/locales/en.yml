@@ -515,6 +515,7 @@ en:
             skip: Check here to skip this window in the future
           vote_button: Click to vote
           voted: Voted
+          voting_for: My vote is %{type}
           weights:
             weight_0: Abstain
             weight_1: Red

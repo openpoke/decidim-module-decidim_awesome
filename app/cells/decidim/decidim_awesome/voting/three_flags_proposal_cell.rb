@@ -33,6 +33,25 @@ module Decidim
           proposal_proposal_vote_path(proposal_id: proposal.id, from_proposals_list: from_proposals_list, weight: weight)
         end
 
+        def link_options(weight)
+          ops = {
+            class: "vote-action vote-card weight_#{weight} #{opacity_class_for(weight)} #{"voted" if voted_for?(weight)}"
+          }
+          if current_user
+            ops.merge!({
+                         remote: true,
+                         method: :post
+                       })
+          end
+          ops
+        end
+
+        def svg_path(weight)
+          card = "handcard"
+          card = "handcheck" if voted_for?(weight)
+          "#{asset_pack_path("media/images/#{card}.svg")}#handcard"
+        end
+
         def opacity_class_for(weight)
           opacity = !voted_for_any? || voted_for?(weight) ? "fully-opaque" : "semi-opaque"
           clickable = voted_for_any? ? "non-clickable" : ""
