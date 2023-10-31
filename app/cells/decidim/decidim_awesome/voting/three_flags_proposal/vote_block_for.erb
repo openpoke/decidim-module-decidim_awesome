@@ -1,6 +1,8 @@
 <div id="vote-container" data-proposal-id="<%= proposal.id %>">
   <div class="vote-block">
-    <p class="vote-count" data-weight="<%= weight %>"><%= proposal_votes(weight) %></p>
+    <% unless current_settings.votes_hidden? %>
+      <p class="vote-count" data-weight="<%= weight %>"><%= proposal_votes(weight) %></p>
+    <% end %>
     <%= action_authorized_link_to :vote,
                                   proposal_vote_path(weight),
                                   **link_options(weight) do %>

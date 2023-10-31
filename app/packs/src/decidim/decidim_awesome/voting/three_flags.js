@@ -40,7 +40,7 @@ $(() => {
     $modal.foundation("close");
   });
 
-  $(".voting-three-flags").on("click", ".vote-action", (evt) => {
+  $(".button--vote-button .voting-three-flags").on("click", ".vote-action", (evt) => {
     if (showModal()) {
       evt.stopPropagation();
       evt.preventDefault();

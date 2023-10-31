@@ -6,7 +6,7 @@
   <%= vote_block_for(proposal, 1) %>
 </div>
 
-<% if current_component.settings.three_flags_show_abstain %>
+<% if component_settings.three_flags_show_abstain? %>
   <%= action_authorized_link_to :vote,
                                 voted_for?(0) ? t("decidim.decidim_awesome.voting.three_flags.abstained") : proposal.manifest.label_for(0),
                                 proposal_vote_path(0),
@@ -16,7 +16,7 @@
                                   }) %>
 <% end %>
 
-<% if voted_for_any? %>
+<% if voted_for_any? && !current_settings.votes_blocked? %>
   <p class="text-center">
     <%= action_authorized_link_to :unvote,
                                   t("decidim.decidim_awesome.voting.three_flags.change_vote"),
@@ -26,4 +26,10 @@
                                   id: "change-vote",
                                   class: "change-vote-button vote-action" %>
   </p>
+<% elsif proposal.maximum_votes_reached? && !proposal.can_accumulate_supports_beyond_threshold && current_component.participatory_space.can_participate?(current_user) %>
+  <p class="text-center"><%= t("decidim.proposals.proposals.vote_button.maximum_votes_reached") %></p>
+<% elsif vote_limit_enabled? && remaining_votes_count_for(current_user) <= 0 %>
+  <p class="text-center"><%= t("decidim.proposals.proposals.vote_button.no_votes_remaining") %></p>
+<% elsif current_settings.votes_blocked? || !current_component.participatory_space.can_participate?(current_user) %>
+  <p class="text-center"><%= t("decidim.proposals.proposals.vote_button.votes_blocked") %></p>
 <% end %>

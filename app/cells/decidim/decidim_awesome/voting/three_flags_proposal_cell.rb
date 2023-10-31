@@ -55,10 +55,20 @@ module Decidim
         def classes_for(weight)
           ops = ["weight_#{weight}"]
           ops << "voted" if voted_for?(weight)
-          ops << "non-clickable" if voted_for_any?
           ops << "dim" if voted_for_any? && !voted_for?(weight)
+          ops << "disabled" if disabled?
 
           ops.join(" ")
+        end
+
+        def disabled?
+          return true if voted_for_any? || current_settings.votes_blocked?
+
+          if proposal.maximum_votes_reached? && !proposal.can_accumulate_supports_beyond_threshold && current_component.participatory_space.can_participate?(current_user)
+            return true
+          end
+
+          return true if vote_limit_enabled? && remaining_votes_count_for(current_user) <= 0
         end
 
         def voted_for_any?
