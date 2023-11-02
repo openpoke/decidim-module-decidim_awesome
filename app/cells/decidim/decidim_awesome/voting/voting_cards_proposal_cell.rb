@@ -3,7 +3,7 @@
 module Decidim
   module DecidimAwesome
     module Voting
-      class ThreeFlagsProposalCell < ThreeFlagsBaseCell
+      class VotingCardsProposalCell < VotingCardsBaseCell
         VOTE_WEIGHTS = [0, 1, 2, 3].freeze
 
         def show
@@ -76,10 +76,10 @@ module Decidim
         end
 
         def title
-          txt ||= translated_attribute(current_component.settings.three_flags_box_title)
+          txt ||= translated_attribute(current_component.settings.voting_cards_box_title)
           return "" if txt == "-"
 
-          txt.presence || t("decidim.decidim_awesome.voting.three_flags.default_box_title")
+          txt.presence || t("decidim.decidim_awesome.voting.voting_cards.default_box_title")
         end
       end
     end

@@ -3,7 +3,7 @@
 module Decidim
   module DecidimAwesome
     module Voting
-      class ThreeFlagsBaseCell < Decidim::ViewModel
+      class VotingCardsBaseCell < Decidim::ViewModel
         include Decidim::IconHelper
         include Decidim::ComponentPathHelper
         include Decidim::Proposals::ProposalVotesHelper

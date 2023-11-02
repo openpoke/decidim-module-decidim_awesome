@@ -4,7 +4,7 @@ require "spec_helper"
 
 describe "Three flags", type: :system do
   include_context "with a component"
-  let(:manifest) { :three_flags }
+  let(:manifest) { :voting_cards }
   let!(:component) { create :proposal_component, :with_votes_enabled, participatory_space: participatory_space, settings: settings }
   let(:settings) do
     {
@@ -13,10 +13,10 @@ describe "Three flags", type: :system do
       can_accumulate_supports_beyond_threshold: can_accumulate_supports_beyond_threshold,
       minimum_votes_per_user: minimum_votes_per_user,
       awesome_voting_manifest: manifest,
-      three_flags_show_abstain: abstain,
-      three_flags_box_title: box_title,
-      three_flags_instructions: instructions,
-      three_flags_show_modal_help: modal_help
+      voting_cards_show_abstain: abstain,
+      voting_cards_box_title: box_title,
+      voting_cards_instructions: instructions,
+      voting_cards_show_modal_help: modal_help
     }
   end
   let!(:proposals) { create_list(:proposal, 3, component: component) }

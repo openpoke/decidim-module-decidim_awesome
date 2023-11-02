@@ -3,7 +3,7 @@
 module Decidim
   module DecidimAwesome
     module Voting
-      class ThreeFlagsCounterCell < ThreeFlagsBaseCell
+      class VotingCardsCounterCell < VotingCardsBaseCell
         COLORS = { 1 => "alert", 2 => "warning", 3 => "success" }.freeze
         BUTTON_CLASSES = { 0 => "hollow", 1 => "danger", 2 => "warning", 3 => "success" }.freeze
 
