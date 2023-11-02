@@ -55,7 +55,7 @@ describe "Voting Cards", type: :system do
 
       click_link "Abstain"
       within ".vote_proposal_modal" do
-        expect(page).to have_content('My vote is "Abstain"')
+        expect(page).to have_content("My vote on \"#{proposals_title}\" is \"Abstain\"")
         expect(page).to have_content("Please read the election rules carefully to understand how your vote will be used by #{organization.name}")
         click_button "Cancel"
       end
@@ -64,7 +64,7 @@ describe "Voting Cards", type: :system do
           click_link color
         end
         within ".vote_proposal_modal" do
-          expect(page).to have_content("My vote is \"#{color}\"")
+          expect(page).to have_content("My vote on \"#{proposals_title}\" is \"#{color}\"")
           click_button "Cancel"
         end
       end

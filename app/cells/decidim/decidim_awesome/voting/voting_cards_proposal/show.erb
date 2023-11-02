@@ -11,7 +11,7 @@
                                 voted_for?(0) ? t("decidim.decidim_awesome.voting.voting_cards.abstained") : proposal.manifest.label_for(0),
                                 proposal_vote_path(0),
                                 link_options(0).merge({
-                                  title: t("decidim.decidim_awesome.voting.voting_cards.voting_for", type: proposal.manifest.label_for(0)),
+                                  title: t("decidim.decidim_awesome.voting.voting_cards.voting_for", proposal: translated_attribute(proposal.title), type: proposal.manifest.label_for(0)),
                                   class: "button expanded vote-action abstain-button small #{classes_for(0)}"
                                   }) %>
 <% end %>
