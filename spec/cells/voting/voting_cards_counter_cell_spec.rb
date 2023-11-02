@@ -41,13 +41,12 @@ module Decidim
         end
 
         describe "#vote_btn_class" do
-          context "when user has voted with weight 1" do
-            before do
-              create(:awesome_vote_weight, vote: create(:proposal_vote, proposal: proposal, author: user), weight: 1)
-            end
-
-            it "returns 'danger'" do
-              expect(subject.vote_btn_class).to eq("danger")
+          context "when user has voted with weight" do
+            [0, 1, 2, 3].each do |weight|
+              it "returns 'weight_#{weight}'" do
+                create(:awesome_vote_weight, vote: create(:proposal_vote, proposal: proposal, author: user), weight: weight)
+                expect(subject.vote_btn_class).to eq("weight_#{weight}")
+              end
             end
           end
 
