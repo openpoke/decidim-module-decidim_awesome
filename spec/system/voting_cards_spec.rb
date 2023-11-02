@@ -2,7 +2,7 @@
 
 require "spec_helper"
 
-describe "Three flags", type: :system do
+describe "Voting Cards", type: :system do
   include_context "with a component"
   let(:manifest) { :voting_cards }
   let!(:component) { create :proposal_component, :with_votes_enabled, participatory_space: participatory_space, settings: settings }

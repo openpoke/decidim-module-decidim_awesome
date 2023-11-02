@@ -5,7 +5,7 @@ $(() => {
 
   const $modal = $("#VotingCardsModalHelp");
   const $card = $modal.find(".current-choice .vote-card");
-  const $check = $("#three_flag-skip_help");
+  const $check = $("#voting_cards-skip_help");
 
   const storage = () => {
     return JSON.parse(localStorage.getItem("hideTreeFlagsModalHelp") || "{}")

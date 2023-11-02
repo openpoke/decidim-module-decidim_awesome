@@ -1,11 +1,11 @@
 <!--the modal window will be used in another pr-->
-<div class="reveal vote_proposal_modal voting-three-flag" id="VotingCardsModalHelp" data-reveal role="dialog" aria-modal="true" aria-labelledby="VotingCardsModalHelp-label">
+<div class="reveal vote_proposal_modal voting-voting_cards" id="VotingCardsModalHelp" data-reveal role="dialog" aria-modal="true" aria-labelledby="VotingCardsModalHelp-label">
   <div class="reveal__content">
     <div class="instructions"><%= vote_instructions %></div>
     <div class="current-choice voting-voting_cards"><div class="vote-card"></div></div>
     <div class="future-dismiss">
-      <%= check_box_tag "three_flag-skip_help", current_component.id, false %>
-      <%= label_tag "three_flag-skip_help", t("decidim.decidim_awesome.voting.voting_cards.modal.skip") %>
+      <%= check_box_tag "voting_cards-skip_help", current_component.id, false %>
+      <%= label_tag "voting_cards-skip_help", t("decidim.decidim_awesome.voting.voting_cards.modal.skip") %>
     </div>
 
     <div class="text-center">
