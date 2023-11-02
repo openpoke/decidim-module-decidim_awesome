@@ -2,9 +2,9 @@
 
 require "spec_helper"
 
-describe "Voting Cards", type: :system do
+describe "Voting weights with cards", type: :system do
   include_context "with a component"
-  let(:manifest) { :voting_cards }
+  let(:voting_manifest) { :voting_cards }
   let!(:component) { create :proposal_component, :with_votes_enabled, participatory_space: participatory_space, settings: settings }
   let(:settings) do
     {
@@ -12,7 +12,7 @@ describe "Voting Cards", type: :system do
       threshold_per_proposal: threshold_per_proposal,
       can_accumulate_supports_beyond_threshold: can_accumulate_supports_beyond_threshold,
       minimum_votes_per_user: minimum_votes_per_user,
-      awesome_voting_manifest: manifest,
+      awesome_voting_manifest: voting_manifest,
       voting_cards_show_abstain: abstain,
       voting_cards_box_title: box_title,
       voting_cards_instructions: instructions,
@@ -55,7 +55,7 @@ describe "Voting Cards", type: :system do
 
       click_link "Abstain"
       within ".vote_proposal_modal" do
-        expect(page).to have_content("My vote on \"#{proposals_title}\" is \"Abstain\"")
+        expect(page).to have_content("My vote on \"#{strip_tags(proposal_title)}\" is \"Abstain\"")
         expect(page).to have_content("Please read the election rules carefully to understand how your vote will be used by #{organization.name}")
         click_button "Cancel"
       end
@@ -64,7 +64,7 @@ describe "Voting Cards", type: :system do
           click_link color
         end
         within ".vote_proposal_modal" do
-          expect(page).to have_content("My vote on \"#{proposals_title}\" is \"#{color}\"")
+          expect(page).to have_content("My vote on \"#{strip_tags(proposal_title)}\" is \"#{color}\"")
           click_button "Cancel"
         end
       end
@@ -539,8 +539,8 @@ describe "Voting Cards", type: :system do
       end
     end
 
-    context "when no manifest" do
-      let(:manifest) { nil }
+    context "when no voting_manifest" do
+      let(:voting_manifest) { nil }
 
       it "has normal support button" do
         within "#proposal_#{proposal.id}" do

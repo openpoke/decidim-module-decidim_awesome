@@ -15,6 +15,10 @@ module Decidim
           model
         end
 
+        def sanitized_title
+          strip_tags(translated_attribute(proposal.title))
+        end
+
         def current_component
           proposal.component
         end
