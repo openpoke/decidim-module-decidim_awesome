@@ -9,6 +9,8 @@ module Decidim
         include Decidim::Proposals::ProposalVotesHelper
         include Decidim::Proposals::Engine.routes.url_helpers
 
+        delegate :current_settings, to: :current_component
+
         def proposal
           model
         end
@@ -21,10 +23,12 @@ module Decidim
           current_component.settings
         end
 
-        delegate :current_settings, to: :current_component
-
         def current_vote
           @current_vote ||= Decidim::Proposals::ProposalVote.find_by(author: current_user, proposal: model)
+        end
+
+        def user_voted_weight
+          current_vote&.weight
         end
       end
     end

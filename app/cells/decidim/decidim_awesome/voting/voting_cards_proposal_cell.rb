@@ -22,7 +22,7 @@ module Decidim
         end
 
         def voted_for?(option)
-          current_vote&.weight == option
+          user_voted_weight == option
         end
 
         def from_proposals_list

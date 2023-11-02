@@ -19,7 +19,7 @@ describe "Voting Cards", type: :system do
       voting_cards_show_modal_help: modal_help
     }
   end
-  let!(:proposals) { create_list(:proposal, 3, component: component) }
+  let!(:proposals) { create_list(:proposal, 4, component: component) }
   let(:proposal) { proposals.first }
   let(:proposal_title) { translated(proposal.title) }
   let(:user) { create :user, :confirmed, organization: organization }
@@ -441,7 +441,10 @@ describe "Voting Cards", type: :system do
           create(:awesome_vote_weight, vote: create(:proposal_vote, proposal: proposal), weight: 2),
           create(:awesome_vote_weight, vote: create(:proposal_vote, proposal: proposal), weight: 3),
           create(:awesome_vote_weight, vote: create(:proposal_vote, proposal: proposal), weight: 3),
-          create(:awesome_vote_weight, vote: create(:proposal_vote, proposal: proposal), weight: 3)
+          create(:awesome_vote_weight, vote: create(:proposal_vote, proposal: proposal), weight: 3),
+          create(:awesome_vote_weight, vote: create(:proposal_vote, proposal: proposals[1], author: user), weight: 2),
+          create(:awesome_vote_weight, vote: create(:proposal_vote, proposal: proposals[2], author: user), weight: 3),
+          create(:awesome_vote_weight, vote: create(:proposal_vote, proposal: proposals[3], author: user), weight: 0)
         ]
       end
 
@@ -452,6 +455,31 @@ describe "Voting Cards", type: :system do
           expect(page).to have_content("R: 1")
           expect(page).to have_content("A: 0")
           expect(page).to have_link("Voted")
+          expect(page).to have_css("a.button.weight_1")
+        end
+        within "#proposal_#{proposals[1].id}" do
+          expect(page).to have_content("G: 0")
+          expect(page).to have_content("Y: 1")
+          expect(page).to have_content("R: 0")
+          expect(page).to have_content("A: 0")
+          expect(page).to have_link("Voted")
+          expect(page).to have_css("a.button.weight_2")
+        end
+        within "#proposal_#{proposals[2].id}" do
+          expect(page).to have_content("G: 1")
+          expect(page).to have_content("Y: 0")
+          expect(page).to have_content("R: 0")
+          expect(page).to have_content("A: 0")
+          expect(page).to have_link("Voted")
+          expect(page).to have_css("a.button.weight_3")
+        end
+        within "#proposal_#{proposals[3].id}" do
+          expect(page).to have_content("G: 0")
+          expect(page).to have_content("Y: 0")
+          expect(page).to have_content("R: 0")
+          expect(page).to have_content("A: 1")
+          expect(page).to have_link("Voted")
+          expect(page).to have_css("a.button.weight_0")
         end
       end
 
